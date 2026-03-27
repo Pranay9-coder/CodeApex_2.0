@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Bank Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="ambient">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+    <div id="stars"></div>
+  </div>
+
+  <main class="shell">
+    <section class="brand-card">
+      <p class="eyebrow">Hackathon Edition</p>
+      <h1>AI Bank Assistant</h1>
+      <p class="subtitle">Multilingual banking support with voice, context and style.</p>
+
+      <div class="feature-grid">
+        <article>
+          <h3>Language Aware</h3>
+          <p>Asks and answers in English, Hindi, or Marathi.</p>
+        </article>
+        <article>
+          <h3>Secure Session</h3>
+          <p>Mobile login flow for personalized account support.</p>
+        </article>
+        <article>
+          <h3>Voice Ready</h3>
+          <p>Talk to the assistant and hear responses instantly.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="authPanel">
+      <h2>Sign In</h2>
+      <p class="hint">Use a demo mobile from your dataset (example: 9876543210).</p>
+      <form id="loginForm">
+        <label for="mobile">Mobile Number</label>
+        <input id="mobile" name="mobile" type="text" inputmode="numeric" autocomplete="tel" placeholder="Enter mobile number" required />
+        <button type="submit">Enter Assistant</button>
+      </form>
+      <p id="loginStatus" class="status"></p>
+    </section>
+
+    <section class="panel hidden" id="chatPanel">
+      <header class="chat-header">
+        <div>
+          <h2>Conversation</h2>
+          <p id="profileLine"></p>
+        </div>
+        <button id="logoutBtn" class="ghost">Logout</button>
+      </header>
+
+      <div class="toolbar">
+        <div class="control-group">
+          <label for="languageSelect">Reply Language</label>
+          <select id="languageSelect">
+            <option value="auto">Auto (match question)</option>
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="mr">Marathi</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="voiceModeSelect">Voice Mode</label>
+          <select id="voiceModeSelect">
+            <option value="stable">Stable</option>
+            <option value="dynamic">Dynamic (changes over time)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="quick-prompts" id="quickPrompts">
+        <button type="button" class="chip" data-prompt="What is my account balance?">Balance</button>
+        <button type="button" class="chip" data-prompt="Show my last five transactions.">Transactions</button>
+        <button type="button" class="chip" data-prompt="माझ्या खात्यात किती शिल्लक आहे?">Marathi Balance</button>
+        <button type="button" class="chip" data-prompt="मेरा अकाउंट नंबर और प्रकार बताओ।">Hindi Account Details</button>
+      </div>
+
+      <div id="chatBox" class="chat-box"></div>
+
+      <div class="voice-core" id="voiceCore" aria-hidden="true">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <p class="voice-state" id="voiceState">Voice idle</p>
+
+      <form id="chatForm" class="composer">
+        <button type="button" id="micBtn" class="icon-btn" title="Voice input">Mic</button>
+        <input id="messageInput" type="text" placeholder="Ask your banking question..." required />
+        <button type="submit">Send</button>
+        <button type="button" id="speakToggle" class="ghost" title="Toggle speech">Speech On</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
