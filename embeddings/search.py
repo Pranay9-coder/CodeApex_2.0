@@ -48,6 +48,11 @@ for f in faqs:
 MAX_FAQ_DISTANCE = 0.95
 MIN_FAQ_DISTANCE_GAP = 0.08
 
+# Optional Gemini refinement (recommended for faster multilingual quality).
+GEMINI_ENABLED = os.getenv("GEMINI_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+
 # Optional local Indic LLM refinement (disabled by default).
 INDIC_LLM_ENABLED = os.getenv("INDIC_LLM_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
 INDIC_LLM_MODEL_NAME = os.getenv("INDIC_LLM_MODEL", "ai4bharat/Indic-LLaMA-7B")
@@ -57,6 +62,46 @@ INDIC_LLM_DEVICE = os.getenv("INDIC_LLM_DEVICE", "cpu")  # Use "cuda" if GPU ava
 _indic_model = None
 _indic_tokenizer = None
 _indic_model_load_error = None
+_gemini_model = None
+_gemini_model_load_error = None
+_last_refiner = "deterministic"
+
+
+def _lazy_load_gemini_model():
+    """Load Gemini client on first use with fallback."""
+    global _gemini_model, _gemini_model_load_error
+
+    if _gemini_model is not None or _gemini_model_load_error is not None:
+        return _gemini_model
+
+    if not GEMINI_ENABLED:
+        _gemini_model_load_error = "Gemini disabled"
+        return None
+    if not GEMINI_API_KEY:
+        _gemini_model_load_error = "GEMINI_API_KEY missing"
+        return None
+
+    try:
+        import google.generativeai as genai  # type: ignore[import-not-found]
+
+        genai.configure(api_key=GEMINI_API_KEY)
+        _gemini_model = genai.GenerativeModel(GEMINI_MODEL)
+        return _gemini_model
+    except Exception as e:
+        _gemini_model_load_error = str(e)
+        print(f"Warning: Could not load Gemini model: {e}. Using fallback responses.")
+        return None
+
+
+def _pick_torch_device() -> str:
+    try:
+        import torch
+
+        if INDIC_LLM_DEVICE == "cuda" and torch.cuda.is_available():
+            return "cuda"
+    except Exception:
+        pass
+    return "cpu"
 
 
 def _lazy_load_indic_model():
@@ -77,24 +122,22 @@ def _lazy_load_indic_model():
             _indic_model_load_error = "transformers not installed"
             return None, None
         
-        try:
-            import torch
-            if torch.cuda.is_available() and INDIC_LLM_DEVICE == "cuda":
-                device = "cuda"
-            else:
-                device = "cpu"
-        except (ImportError, RuntimeError):
-            device = "cpu"
+        device = _pick_torch_device()
         
         print(f"Loading Indic-LLaMA model ({INDIC_LLM_MODEL_NAME}) on {device}...")
         with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
             _indic_tokenizer = AutoTokenizer.from_pretrained(INDIC_LLM_MODEL_NAME)
-            _indic_model = AutoModelForCausalLM.from_pretrained(
-                INDIC_LLM_MODEL_NAME,
-                device_map=device,
-                torch_dtype="auto",
-                load_in_8bit=False,
-            ).eval()
+            _indic_model = AutoModelForCausalLM.from_pretrained(INDIC_LLM_MODEL_NAME)
+
+        # Move model to selected device after load for broad compatibility.
+        try:
+            _indic_model = _indic_model.to(device)
+        except Exception:
+            # Keep CPU if transfer is not possible in this environment.
+            device = "cpu"
+            _indic_model = _indic_model.to(device)
+
+        _indic_model = _indic_model.eval()
         print(f"Indic-LLaMA loaded successfully on {device}")
         return _indic_model, _indic_tokenizer
     except Exception as e:
@@ -200,11 +243,17 @@ def detect_intent(query: str) -> str:
         "ac number",
         "खाता नंबर",
         "खाते क्रमांक",
+        "खाते नंबर",
+        "मेरा अकाउंट नंबर",
+        "अकाउंट नंबर",
         "khata number",
         "khate kramank",
+        "khate number",
+        "mera account number",
         "account type",
         "खाता प्रकार",
         "खाते प्रकार",
+        "खाते का प्रकार",
         "khata prakar",
         "khate prakar",
     ]):
@@ -348,37 +397,108 @@ def _maybe_refine_with_indic_model(query: str, answer: str, lang: str) -> str:
     if answer in protected:
         return answer
 
-    language_name = {"en": "English", "hi": "हिंदी", "mr": "मराठी"}.get(lang, "English")
+    language_name = {"en": "English", "hi": "Hindi", "mr": "Marathi"}.get(lang, "English")
     prompt = (
-        f"You are a banking assistant. Answer in {language_name}. "
-        f"Keep all facts and numbers exactly the same. Do not add new facts.\n\n"
-        f"Question: {query}\n"
-        f"Answer: {answer}"
+        f"You are a banking response refiner. Target language: {language_name}.\n"
+        "Rules:\n"
+        "1) Keep all numbers, dates, amounts and account identifiers unchanged.\n"
+        "2) Do not add new facts, policy claims, or advice.\n"
+        "3) Keep response concise and natural.\n"
+        "4) Return only the refined answer text.\n\n"
+        f"User question: {query}\n"
+        f"Base answer: {answer}"
     )
 
     try:
         import torch
-        inputs = tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
-        if INDIC_LLM_DEVICE == "cuda" and torch.cuda.is_available():
+        inputs = tokenizer(prompt, return_tensors="pt", max_length=768, truncation=True)
+        if _pick_torch_device() == "cuda" and torch.cuda.is_available():
             inputs = {k: v.cuda() for k, v in inputs.items()}
         
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
-                max_new_tokens=200,
-                temperature=0.3,
+                max_new_tokens=120,
+                temperature=0.2,
                 top_p=0.9,
-                do_sample=True,
+                do_sample=False,
                 pad_token_id=tokenizer.eos_token_id,
             )
         
-        candidate = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        # Extract only the refined answer part (after "Answer:")
-        if "Answer:" in candidate:
-            candidate = candidate.split("Answer:")[-1].strip()
+        generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        candidate = tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
         return candidate[:500].strip() or answer
     except Exception:
         return answer
+
+
+def _maybe_refine_with_gemini(query: str, answer: str, lang: str) -> str:
+    """Optionally improve phrasing using Gemini while keeping facts unchanged."""
+    model = _lazy_load_gemini_model()
+    if model is None:
+        return answer
+
+    protected = {
+        handoff_message(lang),
+        out_of_scope_message(lang),
+        uncertain_faq_message(lang),
+    }
+    if answer in protected:
+        return answer
+
+    language_name = {"en": "English", "hi": "Hindi", "mr": "Marathi"}.get(lang, "English")
+    prompt = (
+        f"You are a banking response refiner. Target language: {language_name}.\n"
+        "Rules:\n"
+        "1) Keep all numbers, amounts, dates, account identifiers and facts exactly unchanged.\n"
+        "2) Do not add new facts, policies, or advice.\n"
+        "3) Keep the response concise and user-friendly.\n"
+        "4) Return only the final refined answer text.\n\n"
+        f"User question: {query}\n"
+        f"Base answer: {answer}"
+    )
+
+    try:
+        response = model.generate_content(prompt)
+        candidate = (getattr(response, "text", "") or "").strip()
+        if not candidate:
+            return answer
+        return candidate[:500]
+    except Exception:
+        return answer
+
+
+def refine_answer(query: str, answer: str, lang: str) -> str:
+    """Refine answer with Gemini first, then Indic model fallback."""
+    global _last_refiner
+    refined = _maybe_refine_with_gemini(query, answer, lang)
+    if refined != answer:
+        _last_refiner = "gemini"
+        return refined
+
+    refined = _maybe_refine_with_indic_model(query, answer, lang)
+    if refined != answer:
+        _last_refiner = "indic-llama"
+        return refined
+
+    _last_refiner = "deterministic"
+    return answer
+
+
+def get_refiner_status() -> Dict[str, str]:
+    """Return active and configured refinement backend details."""
+    configured = "deterministic"
+    if GEMINI_ENABLED and GEMINI_API_KEY:
+        configured = "gemini"
+    elif INDIC_LLM_ENABLED:
+        configured = "indic-llama"
+
+    return {
+        "configured_mode": configured,
+        "last_used_mode": _last_refiner,
+        "gemini_enabled": str(GEMINI_ENABLED).lower(),
+        "indic_enabled": str(INDIC_LLM_ENABLED).lower(),
+    }
 
 
 # User-specific answers (deterministic)
@@ -532,13 +652,13 @@ def vector_search_faq(query: str, lang: str) -> str:
     # Prefer same-language answer with good distance.
     for doc, meta, dist in zip(docs, metas, distances):
         if meta.get("language") == lang and dist <= MAX_FAQ_DISTANCE:
-            return _maybe_refine_with_indic_model(query, extract_answer(doc), lang)
+            return refine_answer(query, extract_answer(doc), lang)
 
     # Fallback 1: best intent in requested language.
     top_intent = metas[0].get("intent") if metas else None
     top_dist = distances[0] if distances else 999.0
     if top_intent and (top_intent, lang) in FAQ_BY_INTENT_LANG and top_dist <= MAX_FAQ_DISTANCE:
-        return _maybe_refine_with_indic_model(query, FAQ_BY_INTENT_LANG[(top_intent, lang)], lang)
+        return refine_answer(query, FAQ_BY_INTENT_LANG[(top_intent, lang)], lang)
 
     # Fallback 2: strict language query.
     lang_results = collection.query(
@@ -550,7 +670,7 @@ def vector_search_faq(query: str, lang: str) -> str:
     lang_docs = lang_results.get("documents", [[]])[0]
     lang_distances = lang_results.get("distances", [[]])[0]
     if lang_docs and lang_distances and lang_distances[0] <= MAX_FAQ_DISTANCE:
-        return _maybe_refine_with_indic_model(query, extract_answer(lang_docs[0]), lang)
+        return refine_answer(query, extract_answer(lang_docs[0]), lang)
 
     return uncertain_faq_message(lang)
 
@@ -560,26 +680,26 @@ def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str
     intent = detect_intent(query)
     user_id = user["user_id"]
 
-    # Deterministic intents should be answered directly, even if keyword guard is weak.
+    # Deterministic intents: NEVER refine with LLM for banking facts to prevent hallucination.
     if intent == "account_balance":
-        return _maybe_refine_with_indic_model(query, get_balance(user_id, lang), lang)
+        return get_balance(user_id, lang)
     if intent == "transactions":
-        return _maybe_refine_with_indic_model(query, get_transactions(user_id, lang), lang)
+        return get_transactions(user_id, lang)
     if intent == "account_details":
-        return _maybe_refine_with_indic_model(query, get_account_details(user_id, lang), lang)
+        return get_account_details(user_id, lang)
     if intent == "account_status":
-        return _maybe_refine_with_indic_model(query, get_account_status(lang), lang)
+        return get_account_status(lang)
     if intent == "user_profile":
-        return _maybe_refine_with_indic_model(query, get_user_profile(user, lang), lang)
+        return get_user_profile(user, lang)
 
-    # For non-general intents (loan/kyc etc.), try FAQ retrieval directly.
+    # For FAQ/general banking queries, use vector search with optional LLM refinement.
     if intent != "general":
-        return vector_search_faq(query, lang)
+        return refine_answer(query, vector_search_faq(query, lang), lang)
 
     if not is_bank_related(query):
         return out_of_scope_message(lang)
 
-    return vector_search_faq(query, lang)
+    return refine_answer(query, vector_search_faq(query, lang), lang)
 
 
 def run_cli() -> None:

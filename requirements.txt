@@ -9,3 +9,4 @@ Flask
 transformers>=4.30.0
 torch>=2.0.0
 numpy
+google-generativeai>=0.7.2

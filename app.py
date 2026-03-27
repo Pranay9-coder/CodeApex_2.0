@@ -4,7 +4,7 @@ from io import BytesIO
 from flask import Flask, jsonify, render_template, request, send_file, session
 from gtts import gTTS
 
-from embeddings.search import USER_BY_MOBILE, answer_query, detect_language
+from embeddings.search import USER_BY_MOBILE, answer_query, detect_language, get_refiner_status
 
 app = Flask(__name__, template_folder="web/templates", static_folder="web/static")
 app.config["SECRET_KEY"] = os.getenv("BANK_ASSISTANT_SECRET", "dev-secret-change-me")
@@ -18,6 +18,11 @@ def home():
 @app.get("/api/health")
 def health() -> tuple:
     return jsonify({"status": "ok"}), 200
+
+
+@app.get("/api/model-status")
+def model_status() -> tuple:
+    return jsonify(get_refiner_status()), 200
 
 
 @app.post("/api/login")
@@ -124,6 +129,13 @@ def tts() -> tuple:
             return jsonify({"error": "TTS generation failed"}), 500
 
     return send_file(audio, mimetype="audio/mpeg", as_attachment=False, download_name="reply.mp3")
+
+
+@app.post("/api/tts-stop")
+def tts_stop() -> tuple:
+    """Clear TTS state for immediate playback stop on frontend."""
+    session["tts_stop_requested"] = True
+    return jsonify({"ok": True}), 200
 
 
 if __name__ == "__main__":

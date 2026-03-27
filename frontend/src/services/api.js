@@ -48,3 +48,13 @@ export async function getTtsAudio(text, language = "en", voiceMode = "stable") {
   if (!res.ok) throw new Error("TTS failed");
   return res.blob();
 }
+
+export async function stopTts() {
+  const res = await fetch(`${API_BASE}/tts-stop`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({}),
+  });
+  if (!res.ok) throw new Error("Stop TTS failed");
+}
