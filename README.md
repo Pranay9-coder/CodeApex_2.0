@@ -1,5 +1,20 @@
 # AI Bank Assistance
 
+## Optional Ollama Integration
+
+The assistant works without Ollama. If you want more natural responses, enable local Ollama safely:
+
+1. Install and run Ollama.
+2. Pull a model, for example:
+  - `ollama pull llama3.1:8b`
+3. Set environment variables before starting backend:
+  - `OLLAMA_ENABLED=true`
+  - `OLLAMA_HOST=http://127.0.0.1:11434`
+  - `OLLAMA_MODEL=llama3.1:8b`
+  - `OLLAMA_TIMEOUT_SEC=12`
+
+If Ollama is unavailable or slow, the project automatically falls back to current deterministic responses with no breaking change.
+
 AI Bank Assistance is a multilingual banking assistant that answers account and FAQ queries in English, Hindi, and Marathi.
 
 It combines:

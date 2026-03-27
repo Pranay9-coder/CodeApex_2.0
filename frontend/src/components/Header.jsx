@@ -1,9 +1,9 @@
-import { Globe, Sparkles } from "lucide-react";
+import { Languages, Sparkles } from "lucide-react";
 
 const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "hi", label: "Hindi" },
-  { code: "mr", label: "Marathi" },
+  { code: "en", label: "English", native: "English" },
+  { code: "hi", label: "Hindi", native: "हिंदी" },
+  { code: "mr", label: "Marathi", native: "मराठी" },
 ];
 
 export default function Header({ language, onLanguageChange, voiceMode, onVoiceModeChange }) {
@@ -20,24 +20,48 @@ export default function Header({ language, onLanguageChange, voiceMode, onVoiceM
       </div>
 
       <div className="header-controls">
-        <label className="selector-wrap">
-          <Globe size={14} />
-          <select value={language} onChange={(e) => onLanguageChange(e.target.value)}>
+        <div className="control-group">
+          <span className="control-label">
+            <Languages size={14} />
+            Language / भाषा / भाषा
+          </span>
+          <div className="lang-toggle" role="tablist" aria-label="Language selector">
             {LANGUAGES.map((l) => (
-              <option key={l.code} value={l.code}>
-                {l.label}
-              </option>
+              <button
+                key={l.code}
+                type="button"
+                className={`lang-btn ${language === l.code ? "active" : ""}`}
+                onClick={() => onLanguageChange(l.code)}
+                aria-pressed={language === l.code}
+                title={l.label}
+              >
+                {l.native}
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
+        </div>
 
-        <label className="selector-wrap">
-          <span>Voice</span>
-          <select value={voiceMode} onChange={(e) => onVoiceModeChange(e.target.value)}>
-            <option value="stable">Stable</option>
-            <option value="dynamic">Dynamic</option>
-          </select>
-        </label>
+        <div className="control-group">
+          <span className="control-label">Voice Style</span>
+          <div className="mode-toggle" role="tablist" aria-label="Voice style selector">
+            <button
+              type="button"
+              className={`mode-btn ${voiceMode === "stable" ? "active" : ""}`}
+              onClick={() => onVoiceModeChange("stable")}
+              aria-pressed={voiceMode === "stable"}
+            >
+              Stable
+            </button>
+            <button
+              type="button"
+              className={`mode-btn ${voiceMode === "dynamic" ? "active" : ""}`}
+              onClick={() => onVoiceModeChange("dynamic")}
+              aria-pressed={voiceMode === "dynamic"}
+            >
+              Dynamic
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );

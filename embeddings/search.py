@@ -1,9 +1,12 @@
 import json
 import io
+import os
 import unicodedata
 from pathlib import Path
 from contextlib import redirect_stderr, redirect_stdout
 from typing import Dict, List, Optional, Tuple
+from urllib import error as urlerror
+from urllib import request as urlrequest
 
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
@@ -43,8 +46,15 @@ FAQ_BY_INTENT_LANG: Dict[Tuple[str, str], str] = {}
 for f in faqs:
     FAQ_BY_INTENT_LANG[(f["intent"], f["language"])] = f["answer"]
 
-# Low-confidence guardrail for FAQ vector retrieval.
-MAX_FAQ_DISTANCE = 1.25
+# FAQ confidence guardrails.
+MAX_FAQ_DISTANCE = 0.95
+MIN_FAQ_DISTANCE_GAP = 0.08
+
+# Optional local LLM refinement (disabled by default).
+OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434").rstrip("/")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+OLLAMA_TIMEOUT_SEC = float(os.getenv("OLLAMA_TIMEOUT_SEC", "12"))
 
 
 def normalize(text: str) -> str:
@@ -238,6 +248,91 @@ def handoff_message(lang: str) -> str:
     return messages.get(lang, messages["en"])
 
 
+def out_of_scope_message(lang: str) -> str:
+    messages = {
+        "en": (
+            "I can currently help with banking topics only, such as balance, transactions, account details, "
+            "KYC, and loan information. For other topics, please contact a bank officer."
+        ),
+        "hi": (
+            "मैं अभी केवल बैंकिंग विषयों में मदद कर सकता हूँ, जैसे बैलेंस, लेनदेन, खाता विवरण, "
+            "KYC और लोन जानकारी। अन्य विषयों के लिए कृपया बैंक अधिकारी से संपर्क करें।"
+        ),
+        "mr": (
+            "मी सध्या फक्त बँकिंग विषयांमध्ये मदत करू शकतो, जसे शिल्लक, व्यवहार, खाते तपशील, "
+            "KYC आणि कर्ज माहिती. इतर विषयांसाठी कृपया बँक अधिकाऱ्याशी संपर्क करा."
+        ),
+    }
+    return messages.get(lang, messages["en"])
+
+
+def uncertain_faq_message(lang: str) -> str:
+    messages = {
+        "en": (
+            "I could not find a reliable answer to that banking question. "
+            "Please rephrase your question, or I can connect you to a bank officer."
+        ),
+        "hi": (
+            "मुझे इस बैंकिंग प्रश्न का विश्वसनीय उत्तर नहीं मिला। "
+            "कृपया प्रश्न दोबारा लिखें, या मैं आपको बैंक अधिकारी से जोड़ सकता हूँ।"
+        ),
+        "mr": (
+            "या बँकिंग प्रश्नासाठी मला विश्वासार्ह उत्तर मिळाले नाही. "
+            "कृपया प्रश्न पुन्हा विचारा, किंवा मी तुम्हाला बँक अधिकाऱ्याशी जोडू शकतो."
+        ),
+    }
+    return messages.get(lang, messages["en"])
+
+
+def _maybe_refine_with_ollama(query: str, answer: str, lang: str) -> str:
+    """Optionally improve phrasing using Ollama while keeping facts unchanged."""
+    if not OLLAMA_ENABLED:
+        return answer
+
+    # Keep escalation/scope messages deterministic and policy-safe.
+    protected = {
+        handoff_message(lang),
+        out_of_scope_message(lang),
+        uncertain_faq_message(lang),
+    }
+    if answer in protected:
+        return answer
+
+    language_name = {"en": "English", "hi": "Hindi", "mr": "Marathi"}.get(lang, "English")
+    prompt = (
+        "You are a banking assistant rewriter. Rewrite the answer in clear, polite "
+        f"{language_name}. Keep all facts and numbers exactly the same. "
+        "Do not add new facts. Keep it concise.\n\n"
+        f"User question: {query}\n"
+        f"Grounded answer: {answer}\n\n"
+        "Return only the final rewritten answer."
+    )
+
+    payload = json.dumps(
+        {
+            "model": OLLAMA_MODEL,
+            "prompt": prompt,
+            "stream": False,
+            "options": {"temperature": 0.2},
+        }
+    ).encode("utf-8")
+
+    req = urlrequest.Request(
+        f"{OLLAMA_HOST}/api/generate",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urlrequest.urlopen(req, timeout=OLLAMA_TIMEOUT_SEC) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+            candidate = str(body.get("response", "")).strip()
+            return candidate or answer
+    except (urlerror.URLError, TimeoutError, json.JSONDecodeError, OSError, ValueError):
+        return answer
+
+
 # User-specific answers (deterministic)
 def format_currency(amount: int) -> str:
     return f"{amount:,}"
@@ -372,18 +467,30 @@ def vector_search_faq(query: str, lang: str) -> str:
     distances = results.get("distances", [[]])[0]
 
     if not docs:
-        return handoff_message(lang)
+        return uncertain_faq_message(lang)
+
+    top_dist = distances[0] if distances else 999.0
+    if top_dist > MAX_FAQ_DISTANCE:
+        return uncertain_faq_message(lang)
+
+    # If top candidates are too close but represent different intents, avoid random answer.
+    if len(distances) > 1 and len(metas) > 1:
+        gap = distances[1] - distances[0]
+        top_intent = metas[0].get("intent")
+        second_intent = metas[1].get("intent")
+        if top_intent != second_intent and gap < MIN_FAQ_DISTANCE_GAP:
+            return uncertain_faq_message(lang)
 
     # Prefer same-language answer with good distance.
     for doc, meta, dist in zip(docs, metas, distances):
         if meta.get("language") == lang and dist <= MAX_FAQ_DISTANCE:
-            return extract_answer(doc)
+            return _maybe_refine_with_ollama(query, extract_answer(doc), lang)
 
     # Fallback 1: best intent in requested language.
     top_intent = metas[0].get("intent") if metas else None
     top_dist = distances[0] if distances else 999.0
     if top_intent and (top_intent, lang) in FAQ_BY_INTENT_LANG and top_dist <= MAX_FAQ_DISTANCE:
-        return FAQ_BY_INTENT_LANG[(top_intent, lang)]
+        return _maybe_refine_with_ollama(query, FAQ_BY_INTENT_LANG[(top_intent, lang)], lang)
 
     # Fallback 2: strict language query.
     lang_results = collection.query(
@@ -395,9 +502,9 @@ def vector_search_faq(query: str, lang: str) -> str:
     lang_docs = lang_results.get("documents", [[]])[0]
     lang_distances = lang_results.get("distances", [[]])[0]
     if lang_docs and lang_distances and lang_distances[0] <= MAX_FAQ_DISTANCE:
-        return extract_answer(lang_docs[0])
+        return _maybe_refine_with_ollama(query, extract_answer(lang_docs[0]), lang)
 
-    return handoff_message(lang)
+    return uncertain_faq_message(lang)
 
 
 def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str:
@@ -407,22 +514,22 @@ def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str
 
     # Deterministic intents should be answered directly, even if keyword guard is weak.
     if intent == "account_balance":
-        return get_balance(user_id, lang)
+        return _maybe_refine_with_ollama(query, get_balance(user_id, lang), lang)
     if intent == "transactions":
-        return get_transactions(user_id, lang)
+        return _maybe_refine_with_ollama(query, get_transactions(user_id, lang), lang)
     if intent == "account_details":
-        return get_account_details(user_id, lang)
+        return _maybe_refine_with_ollama(query, get_account_details(user_id, lang), lang)
     if intent == "account_status":
-        return get_account_status(lang)
+        return _maybe_refine_with_ollama(query, get_account_status(lang), lang)
     if intent == "user_profile":
-        return get_user_profile(user, lang)
+        return _maybe_refine_with_ollama(query, get_user_profile(user, lang), lang)
 
     # For non-general intents (loan/kyc etc.), try FAQ retrieval directly.
     if intent != "general":
         return vector_search_faq(query, lang)
 
     if not is_bank_related(query):
-        return handoff_message(lang)
+        return out_of_scope_message(lang)
 
     return vector_search_faq(query, lang)
 
