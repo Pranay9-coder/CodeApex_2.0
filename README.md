@@ -1,19 +1,42 @@
 # AI Bank Assistance
 
-## Optional Ollama Integration
+## Indic-LLaMA Integration (Optimized for Hindi & Marathi)
 
-The assistant works without Ollama. If you want more natural responses, enable local Ollama safely:
+The assistant uses **Indic-LLaMA-7B**, an Indian-optimized language model for better Hindi and Marathi support.
 
-1. Install and run Ollama.
-2. Pull a model, for example:
-  - `ollama pull llama3.1:8b`
-3. Set environment variables before starting backend:
-  - `OLLAMA_ENABLED=true`
-  - `OLLAMA_HOST=http://127.0.0.1:11434`
-  - `OLLAMA_MODEL=llama3.1:8b`
-  - `OLLAMA_TIMEOUT_SEC=12`
+### Setup Indic-LLaMA
 
-If Ollama is unavailable or slow, the project automatically falls back to current deterministic responses with no breaking change.
+1. First-time setup: Download Hugging Face model (1-2 GB):
+   ```bash
+   # Install transformers, torch, and dependencies
+   pip install -r requirements.txt
+   ```
+
+2. Enable Indic-LLaMA before starting backend:
+   ```powershell
+   $env:INDIC_LLM_ENABLED="true"
+   $env:INDIC_LLM_MODEL="ai4bharat/Indic-LLaMA-7B"
+   $env:INDIC_LLM_DEVICE="cpu"  # Use "cuda" if GPU is available
+   ```
+
+3. Run backend normally (model loads on first request):
+   ```bash
+   python app.py
+   ```
+
+### Optional: GPU Acceleration
+
+If you have NVIDIA GPU:
+```powershell
+$env:INDIC_LLM_DEVICE="cuda"
+pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+### Without Indic-LLaMA
+
+If you skip enabling it, the assistant still works with deterministic responses (no model needed). 
+
+---
 
 AI Bank Assistance is a multilingual banking assistant that answers account and FAQ queries in English, Hindi, and Marathi.
 

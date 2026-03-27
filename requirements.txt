@@ -6,3 +6,6 @@ pyttsx3
 gTTS
 playsound==1.2.2
 Flask
+transformers>=4.30.0
+torch>=2.0.0
+numpy

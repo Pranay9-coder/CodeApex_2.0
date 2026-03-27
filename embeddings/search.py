@@ -5,8 +5,6 @@ import unicodedata
 from pathlib import Path
 from contextlib import redirect_stderr, redirect_stdout
 from typing import Dict, List, Optional, Tuple
-from urllib import error as urlerror
-from urllib import request as urlrequest
 
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
@@ -50,11 +48,59 @@ for f in faqs:
 MAX_FAQ_DISTANCE = 0.95
 MIN_FAQ_DISTANCE_GAP = 0.08
 
-# Optional local LLM refinement (disabled by default).
-OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434").rstrip("/")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
-OLLAMA_TIMEOUT_SEC = float(os.getenv("OLLAMA_TIMEOUT_SEC", "12"))
+# Optional local Indic LLM refinement (disabled by default).
+INDIC_LLM_ENABLED = os.getenv("INDIC_LLM_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+INDIC_LLM_MODEL_NAME = os.getenv("INDIC_LLM_MODEL", "ai4bharat/Indic-LLaMA-7B")
+INDIC_LLM_DEVICE = os.getenv("INDIC_LLM_DEVICE", "cpu")  # Use "cuda" if GPU available
+
+# Lazy-load Indic model to avoid startup delay if not needed.
+_indic_model = None
+_indic_tokenizer = None
+_indic_model_load_error = None
+
+
+def _lazy_load_indic_model():
+    """Load Indic-LLaMA model on first use with fallback."""
+    global _indic_model, _indic_tokenizer, _indic_model_load_error
+    
+    if _indic_model is not None or _indic_model_load_error is not None:
+        return _indic_model, _indic_tokenizer
+    
+    try:
+        if not INDIC_LLM_ENABLED:
+            _indic_model_load_error = "Indic LLM disabled"
+            return None, None
+        
+        try:
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+        except ImportError:
+            _indic_model_load_error = "transformers not installed"
+            return None, None
+        
+        try:
+            import torch
+            if torch.cuda.is_available() and INDIC_LLM_DEVICE == "cuda":
+                device = "cuda"
+            else:
+                device = "cpu"
+        except (ImportError, RuntimeError):
+            device = "cpu"
+        
+        print(f"Loading Indic-LLaMA model ({INDIC_LLM_MODEL_NAME}) on {device}...")
+        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            _indic_tokenizer = AutoTokenizer.from_pretrained(INDIC_LLM_MODEL_NAME)
+            _indic_model = AutoModelForCausalLM.from_pretrained(
+                INDIC_LLM_MODEL_NAME,
+                device_map=device,
+                torch_dtype="auto",
+                load_in_8bit=False,
+            ).eval()
+        print(f"Indic-LLaMA loaded successfully on {device}")
+        return _indic_model, _indic_tokenizer
+    except Exception as e:
+        _indic_model_load_error = str(e)
+        print(f"Warning: Could not load Indic-LLaMA model: {e}. Using fallback responses.")
+        return None, None
 
 
 def normalize(text: str) -> str:
@@ -284,9 +330,13 @@ def uncertain_faq_message(lang: str) -> str:
     return messages.get(lang, messages["en"])
 
 
-def _maybe_refine_with_ollama(query: str, answer: str, lang: str) -> str:
-    """Optionally improve phrasing using Ollama while keeping facts unchanged."""
-    if not OLLAMA_ENABLED:
+def _maybe_refine_with_indic_model(query: str, answer: str, lang: str) -> str:
+    """Optionally improve phrasing using Indic-LLaMA while keeping facts unchanged."""
+    if not INDIC_LLM_ENABLED:
+        return answer
+    
+    model, tokenizer = _lazy_load_indic_model()
+    if model is None or tokenizer is None:
         return answer
 
     # Keep escalation/scope messages deterministic and policy-safe.
@@ -298,38 +348,36 @@ def _maybe_refine_with_ollama(query: str, answer: str, lang: str) -> str:
     if answer in protected:
         return answer
 
-    language_name = {"en": "English", "hi": "Hindi", "mr": "Marathi"}.get(lang, "English")
+    language_name = {"en": "English", "hi": "हिंदी", "mr": "मराठी"}.get(lang, "English")
     prompt = (
-        "You are a banking assistant rewriter. Rewrite the answer in clear, polite "
-        f"{language_name}. Keep all facts and numbers exactly the same. "
-        "Do not add new facts. Keep it concise.\n\n"
-        f"User question: {query}\n"
-        f"Grounded answer: {answer}\n\n"
-        "Return only the final rewritten answer."
-    )
-
-    payload = json.dumps(
-        {
-            "model": OLLAMA_MODEL,
-            "prompt": prompt,
-            "stream": False,
-            "options": {"temperature": 0.2},
-        }
-    ).encode("utf-8")
-
-    req = urlrequest.Request(
-        f"{OLLAMA_HOST}/api/generate",
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
+        f"You are a banking assistant. Answer in {language_name}. "
+        f"Keep all facts and numbers exactly the same. Do not add new facts.\n\n"
+        f"Question: {query}\n"
+        f"Answer: {answer}"
     )
 
     try:
-        with urlrequest.urlopen(req, timeout=OLLAMA_TIMEOUT_SEC) as resp:
-            body = json.loads(resp.read().decode("utf-8"))
-            candidate = str(body.get("response", "")).strip()
-            return candidate or answer
-    except (urlerror.URLError, TimeoutError, json.JSONDecodeError, OSError, ValueError):
+        import torch
+        inputs = tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
+        if INDIC_LLM_DEVICE == "cuda" and torch.cuda.is_available():
+            inputs = {k: v.cuda() for k, v in inputs.items()}
+        
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=200,
+                temperature=0.3,
+                top_p=0.9,
+                do_sample=True,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+        
+        candidate = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # Extract only the refined answer part (after "Answer:")
+        if "Answer:" in candidate:
+            candidate = candidate.split("Answer:")[-1].strip()
+        return candidate[:500].strip() or answer
+    except Exception:
         return answer
 
 
@@ -484,13 +532,13 @@ def vector_search_faq(query: str, lang: str) -> str:
     # Prefer same-language answer with good distance.
     for doc, meta, dist in zip(docs, metas, distances):
         if meta.get("language") == lang and dist <= MAX_FAQ_DISTANCE:
-            return _maybe_refine_with_ollama(query, extract_answer(doc), lang)
+            return _maybe_refine_with_indic_model(query, extract_answer(doc), lang)
 
     # Fallback 1: best intent in requested language.
     top_intent = metas[0].get("intent") if metas else None
     top_dist = distances[0] if distances else 999.0
     if top_intent and (top_intent, lang) in FAQ_BY_INTENT_LANG and top_dist <= MAX_FAQ_DISTANCE:
-        return _maybe_refine_with_ollama(query, FAQ_BY_INTENT_LANG[(top_intent, lang)], lang)
+        return _maybe_refine_with_indic_model(query, FAQ_BY_INTENT_LANG[(top_intent, lang)], lang)
 
     # Fallback 2: strict language query.
     lang_results = collection.query(
@@ -502,7 +550,7 @@ def vector_search_faq(query: str, lang: str) -> str:
     lang_docs = lang_results.get("documents", [[]])[0]
     lang_distances = lang_results.get("distances", [[]])[0]
     if lang_docs and lang_distances and lang_distances[0] <= MAX_FAQ_DISTANCE:
-        return _maybe_refine_with_ollama(query, extract_answer(lang_docs[0]), lang)
+        return _maybe_refine_with_indic_model(query, extract_answer(lang_docs[0]), lang)
 
     return uncertain_faq_message(lang)
 
@@ -514,15 +562,15 @@ def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str
 
     # Deterministic intents should be answered directly, even if keyword guard is weak.
     if intent == "account_balance":
-        return _maybe_refine_with_ollama(query, get_balance(user_id, lang), lang)
+        return _maybe_refine_with_indic_model(query, get_balance(user_id, lang), lang)
     if intent == "transactions":
-        return _maybe_refine_with_ollama(query, get_transactions(user_id, lang), lang)
+        return _maybe_refine_with_indic_model(query, get_transactions(user_id, lang), lang)
     if intent == "account_details":
-        return _maybe_refine_with_ollama(query, get_account_details(user_id, lang), lang)
+        return _maybe_refine_with_indic_model(query, get_account_details(user_id, lang), lang)
     if intent == "account_status":
-        return _maybe_refine_with_ollama(query, get_account_status(lang), lang)
+        return _maybe_refine_with_indic_model(query, get_account_status(lang), lang)
     if intent == "user_profile":
-        return _maybe_refine_with_ollama(query, get_user_profile(user, lang), lang)
+        return _maybe_refine_with_indic_model(query, get_user_profile(user, lang), lang)
 
     # For non-general intents (loan/kyc etc.), try FAQ retrieval directly.
     if intent != "general":
