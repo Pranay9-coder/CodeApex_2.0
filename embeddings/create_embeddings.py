@@ -1,12 +1,17 @@
 import json
+from pathlib import Path
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+DB_DIR = BASE_DIR / "db"
 
 # 1) Embedding model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # 2) Create persistent DB client
-client = PersistentClient(path="./db")
+client = PersistentClient(path=str(DB_DIR))
 
 # Delete old collection to avoid duplicate records
 try:
@@ -17,20 +22,27 @@ except Exception:
 collection = client.get_or_create_collection(name="bank_data")
 
 # 3) Load all JSON files
-with open("data/users.json", encoding="utf-8") as f:
+with open(DATA_DIR / "users.json", encoding="utf-8") as f:
     users = json.load(f)
 
-with open("data/accounts.json", encoding="utf-8") as f:
+with open(DATA_DIR / "accounts.json", encoding="utf-8") as f:
     accounts = json.load(f)
 
-with open("data/transactions.json", encoding="utf-8") as f:
+with open(DATA_DIR / "transactions.json", encoding="utf-8") as f:
     transactions = json.load(f)
 
-with open("data/general.json", encoding="utf-8") as f:
+with open(DATA_DIR / "general.json", encoding="utf-8") as f:
     faqs = json.load(f)
 
+extended_faq_path = DATA_DIR / "general_extended.json"
+if extended_faq_path.exists():
+    with open(extended_faq_path, encoding="utf-8") as f:
+        extended_faqs = json.load(f)
+    if isinstance(extended_faqs, list):
+        faqs.extend(extended_faqs)
+
 # Load newly added advanced bank knowledge
-with open("data/advanced_bank_knowledge.json", encoding="utf-8") as f:
+with open(DATA_DIR / "advanced_bank_knowledge.json", encoding="utf-8") as f:
     advanced_knowledge = json.load(f)
 
 # 4) Build documents
@@ -153,5 +165,5 @@ collection.add(
     ids=ids,
 )
 
-print("Embeddings created and stored in ./db")
+print(f"Embeddings created and stored in {DB_DIR}")
 print("Total embeddings stored:", collection.count())

@@ -35,6 +35,7 @@ export async function processText(query, language = "auto") {
   return {
     response_text: data.answer,
     language: data.language,
+    follow_ups: data.follow_ups || [],
   };
 }
 

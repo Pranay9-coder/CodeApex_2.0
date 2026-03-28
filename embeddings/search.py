@@ -1,12 +1,11 @@
 import json
 import io
 import os
+import re
 import unicodedata
 from pathlib import Path
 from contextlib import redirect_stderr, redirect_stdout
 from typing import Dict, List, Optional, Tuple
-import os
-import google.generativeai as genai
 
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
@@ -36,6 +35,16 @@ with open(DATA_DIR / "transactions.json", encoding="utf-8") as f:
 with open(DATA_DIR / "general.json", encoding="utf-8") as f:
     faqs = json.load(f)
 
+extended_faq_path = DATA_DIR / "general_extended.json"
+if extended_faq_path.exists():
+    with open(extended_faq_path, encoding="utf-8") as f:
+        extended_faqs = json.load(f)
+    if isinstance(extended_faqs, list):
+        faqs.extend(extended_faqs)
+
+with open(DATA_DIR / "advanced_bank_knowledge.json", encoding="utf-8") as f:
+    advanced_knowledge = json.load(f)
+
 USER_BY_MOBILE: Dict[str, dict] = {u["mobile"]: u for u in users}
 ACCOUNT_BY_USER: Dict[str, dict] = {a["user_id"]: a for a in accounts}
 TXNS_BY_USER: Dict[str, List[dict]] = {}
@@ -43,12 +52,19 @@ for t in transactions:
     TXNS_BY_USER.setdefault(t["user_id"], []).append(t)
 
 FAQ_BY_INTENT_LANG: Dict[Tuple[str, str], str] = {}
-for f in faqs:
-    FAQ_BY_INTENT_LANG[(f["intent"], f["language"])] = f["answer"]
+for idx, f in enumerate(faqs):
+    intent = str(f.get("intent", "")).strip().lower() if isinstance(f, dict) else ""
+    language = str(f.get("language", "")).strip().lower() if isinstance(f, dict) else ""
+    answer = str(f.get("answer", "")).strip() if isinstance(f, dict) else ""
+    if not (intent and language and answer):
+        # Skip malformed/non-FAQ records to keep startup resilient.
+        continue
+    FAQ_BY_INTENT_LANG[(intent, language)] = answer
 
 # FAQ confidence guardrails.
-MAX_FAQ_DISTANCE = 0.95
-MIN_FAQ_DISTANCE_GAP = 0.08
+MAX_FAQ_DISTANCE = 0.78
+MIN_FAQ_DISTANCE_GAP = 0.06
+MAX_KNOWLEDGE_DISTANCE = 0.82
 
 # Optional Gemini refinement (recommended for faster multilingual quality).
 GEMINI_ENABLED = os.getenv("GEMINI_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
@@ -84,15 +100,23 @@ def _lazy_load_gemini_model():
         return None
 
     try:
-        import google.generativeai as genai  # type: ignore[import-not-found]
+        # Preferred SDK.
+        from google import genai  # type: ignore[import-not-found]
 
-        genai.configure(api_key=GEMINI_API_KEY)
-        _gemini_model = genai.GenerativeModel(GEMINI_MODEL)
+        _gemini_model = genai.Client(api_key=GEMINI_API_KEY)
         return _gemini_model
-    except Exception as e:
-        _gemini_model_load_error = str(e)
-        print(f"Warning: Could not load Gemini model: {e}. Using fallback responses.")
-        return None
+    except Exception:
+        try:
+            # Legacy fallback for older environments.
+            import google.generativeai as legacy_genai  # type: ignore[import-not-found]
+
+            legacy_genai.configure(api_key=GEMINI_API_KEY)
+            _gemini_model = legacy_genai.GenerativeModel(GEMINI_MODEL)
+            return _gemini_model
+        except Exception as e:
+            _gemini_model_load_error = str(e)
+            print(f"Warning: Could not load Gemini model: {e}. Using fallback responses.")
+            return None
 
 
 def _pick_torch_device() -> str:
@@ -210,6 +234,7 @@ def detect_language(text: str) -> str:
 
 def detect_intent(query: str) -> str:
     q = normalize(query)
+    tokens = set(re.findall(r"[a-z0-9]+", q))
 
     if any(word in q for word in [
         "balance", "बैलेंस", "बॅलन्स", "शिल्लक", "पैसा", "पैसे", "money", "funds",
@@ -270,7 +295,6 @@ def detect_intent(query: str) -> str:
         "खाता चालू",
         "खाते सक्रिय",
         "खाते चालू",
-        "status",
     ]):
         return "account_status"
 
@@ -320,6 +344,39 @@ def detect_intent(query: str) -> str:
     if any(word in q for word in ["kyc", "केवाईसी", "केवायसी", "केवायसी", "k y c"]):
         return "kyc_update"
 
+    if (
+        "fd" in tokens
+        or any(word in q for word in ["fixed deposit", "term deposit", "एफडी", "फिक्स्ड डिपॉजिट", "मुदत ठेव"])
+    ):
+        return "fd_rates"
+
+    if (
+        "rd" in tokens
+        or any(word in q for word in ["recurring deposit", "रेकरिंग", "आरडी", "आवर्ती जमा"])
+    ):
+        return "rd_info"
+
+    if any(word in q for word in ["block card", "debit card block", "lost card", "कार्ड ब्लॉक", "कार्ड हरवला", "कार्ड बंद"]):
+        return "card_block"
+
+    if any(word in q for word in ["cheque book", "checkbook", "चेकबुक", "चेक बुक", "चेकबुक कसे"]):
+        return "cheque_book"
+
+    if any(word in q for word in ["net banking", "mobile banking", "internet banking", "नेट बैंकिंग", "मोबाइल बैंकिंग", "नेट बँकिंग"]):
+        return "net_banking"
+
+    if any(word in q for word in ["atm pin", "reset pin", "change pin", "एटीएम पिन", "पिन रीसेट", "पिन बदला"]):
+        return "atm_pin_reset"
+
+    if any(word in q for word in ["nominee", "add nominee", "nomination", "नॉमिनी", "नामिनी", "नामनिर्देशित"]):
+        return "nominee_update"
+
+    if any(word in q for word in ["ifsc", "branch code", "branch timing", "working hours", "आईएफएससी", "शाखा", "ब्रांच टाइमिंग"]):
+        return "branch_info"
+
+    if any(word in q for word in ["chargeback", "dispute", "wrong debit", "refund", "गलत कटौती", "विवाद", "चुकीची डेबिट"]):
+        return "transaction_dispute"
+
     return "general"
 
 
@@ -329,11 +386,28 @@ def is_bank_related(query: str) -> bool:
         "bank", "account", "balance", "transaction", "loan", "kyc", "atm", "card", "upi", "neft", "rtgs",
         "बैंक", "खाता", "बैलेंस", "लेनदेन", "लोन", "कार्ड", "पैसा", "केवाईसी",
         "बँक", "खाते", "शिल्लक", "व्यवहार", "कर्ज", "कार्ड", "पैसे",
-        "mini statement", "statement", "status", "active", "interest", "pin",
+        "mini statement", "statement", "active", "interest", "pin",
+        "emi", "eligibility", "scheme", "fixed deposit", "savings account", "interest rate",
+        "fd", "rd", "debit card", "credit card", "block card", "cheque", "checkbook",
+        "passbook", "ifsc", "branch", "working hours", "mobile banking", "net banking",
+        "nominee", "chargeback", "dispute", "refund",
         "khata", "khate", "len den", "vyavhar", "karj", "byaaj", "upy",
         "name", "profile", "district", "mera naam", "majha nav", "majhe nav", "nav",
+        "चेकबुक", "पासबुक", "नॉमिनी", "शाखा", "आईएफएससी", "कार्ड ब्लॉक", "पिन रीसेट",
+        "चेकबुक", "नावनोंदणी", "नॉमिनी", "शाखा वेळ", "कार्ड", "परतावा",
     ]
     return any(k in q for k in keywords)
+
+
+def looks_like_advanced_knowledge_query(query: str) -> bool:
+    q = normalize(query)
+    markers = [
+        "home loan", "personal loan", "education loan", "loan", "interest", "interest rate",
+        "emi", "eligibility", "documents", "processing fee", "tenure", "scheme",
+        "fixed deposit", "fd", "savings account", "kisan credit", "pm awas",
+        "लोन", "कर्ज", "ब्याज", "व्याज", "ईएमआई", "पात्रता", "योजना",
+    ]
+    return any(m in q for m in markers)
 
 def unrelated_message(lang: str) -> str:
     messages = {
@@ -386,6 +460,17 @@ def uncertain_faq_message(lang: str) -> str:
         ),
     }
     return messages.get(lang, messages["en"])
+
+
+def _is_uncertain_response(answer: str, lang: str) -> bool:
+    return answer.strip() == uncertain_faq_message(lang)
+
+
+def faq_by_intent(intent: str, lang: str) -> Optional[str]:
+    ans = FAQ_BY_INTENT_LANG.get((intent, lang))
+    if ans:
+        return ans
+    return FAQ_BY_INTENT_LANG.get((intent, "en"))
 
 
 def _maybe_refine_with_indic_model(query: str, answer: str, lang: str) -> str:
@@ -468,6 +553,15 @@ def _maybe_refine_with_gemini(query: str, answer: str, lang: str) -> str:
     )
 
     try:
+        # New SDK client path.
+        if hasattr(model, "models"):
+            response = model.models.generate_content(model=GEMINI_MODEL, contents=prompt)
+            candidate = (getattr(response, "text", "") or "").strip()
+            if not candidate:
+                return answer
+            return candidate[:500]
+
+        # Legacy SDK model path.
         response = model.generate_content(prompt)
         candidate = (getattr(response, "text", "") or "").strip()
         if not candidate:
@@ -684,39 +778,123 @@ def vector_search_faq(query: str, lang: str) -> str:
     return uncertain_faq_message(lang)
 
 
-def enhance_response_with_gemini(raw_answer: str, user_name: str, lang: str) -> str:
-    """Uses Gemini to refine the raw technical response into an impressive natural language output."""
-    lang_names = {"en": "English", "hi": "Hindi", "mr": "Marathi"}
-    language_name = lang_names.get(lang, "English")
+def extract_knowledge_info(doc: str) -> str:
+    if "Information:" in doc:
+        return doc.split("Information:", 1)[1].strip()
+    return doc.strip()
 
-    system_prompt = f"""You are a polite and highly efficient AI Banking Assistant.
-Your task is to rewrite the provided raw system response into a very short, clear, and direct statement.
-- Maximum 1-2 sentences ONLY.
-- Always use the exact data provided (don't makeup balances or dates).
-- Do not include any greeting fillers like "I hope you are doing well" or sign-offs.
-- Address the user briefly by name ({user_name}).
-- MUST respond directly in {language_name}.
-"""
 
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        print("GEMINI_API_KEY not found in environment. Returning raw answer.")
-        return raw_answer
+def vector_search_knowledge(query: str, lang: str) -> str:
+    query_embedding = model.encode([query]).tolist()
 
-    genai.configure(api_key=api_key)
+    results = collection.query(
+        query_embeddings=query_embedding,
+        n_results=3,
+        where={"type": "advanced_knowledge"},
+        include=["documents", "distances"],
+    )
 
-    try:
-        model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=system_prompt)
-        response = model.generate_content(
-            f"Raw response to rewrite: '{raw_answer}'",
-            generation_config=genai.types.GenerationConfig(
-                temperature=0.1,
+    docs = results.get("documents", [[]])[0]
+    distances = results.get("distances", [[]])[0]
+
+    if not docs or not distances:
+        return uncertain_faq_message(lang)
+
+    if distances[0] > MAX_KNOWLEDGE_DISTANCE:
+        return uncertain_faq_message(lang)
+
+    info = extract_knowledge_info(docs[0])
+    if lang == "hi":
+        base = f"उपलब्ध बैंक जानकारी: {info}"
+    elif lang == "mr":
+        base = f"उपलब्ध बँक माहिती: {info}"
+    else:
+        base = f"Available bank information: {info}"
+
+    return refine_answer(query, base[:600], lang)
+
+
+def _choose_loan_type(query: str) -> str:
+    q = normalize(query)
+    if any(k in q for k in ["personal", "पर्सनल", "वैयक्तिक"]):
+        return "personal_loan"
+    if any(k in q for k in ["education", "student", "शिक्षण", "एजुकेशन"]):
+        return "education_loan"
+    return "home_loan"
+
+
+def get_advanced_knowledge_answer(query: str, lang: str) -> Optional[str]:
+    q = normalize(query)
+
+    if any(k in q for k in ["loan", "home loan", "personal loan", "education loan", "कर्ज", "लोन"]):
+        loans = advanced_knowledge.get("loans", {})
+        loan_key = _choose_loan_type(query)
+        details = loans.get(loan_key, {})
+        if not details:
+            return None
+
+        interest = details.get("interest_rate", "N/A")
+        if isinstance(interest, dict):
+            interest = ", ".join(f"{k}: {v}" for k, v in interest.items())
+        eligibility = details.get("eligibility", {})
+        income = eligibility.get("minimum_income", "N/A") if isinstance(eligibility, dict) else "N/A"
+        credit = eligibility.get("credit_score", "N/A") if isinstance(eligibility, dict) else "N/A"
+
+        if lang == "hi":
+            return (
+                f"{loan_key.replace('_', ' ').title()} के लिए ब्याज दर: {interest}. "
+                f"न्यूनतम आय: {income}. पसंदीदा क्रेडिट स्कोर: {credit}."
             )
+        if lang == "mr":
+            return (
+                f"{loan_key.replace('_', ' ').title()} साठी व्याजदर: {interest}. "
+                f"किमान उत्पन्न: {income}. प्राधान्य क्रेडिट स्कोर: {credit}."
+            )
+        return (
+            f"Interest rate for {loan_key.replace('_', ' ')}: {interest}. "
+            f"Minimum income: {income}. Preferred credit score: {credit}."
         )
-        return response.text.strip()
-    except Exception as e:
-        print(f"Gemini enhancement failed: {e}")
-        return raw_answer
+
+    if any(k in q for k in ["fixed deposit", "fd", "savings", "interest rate", "व्याजदर", "ब्याज दर"]):
+        rates = advanced_knowledge.get("interest_rates", {})
+        savings = rates.get("savings_account", "N/A")
+        fd = rates.get("fixed_deposit", {})
+        one_year = fd.get("1_year", "N/A") if isinstance(fd, dict) else "N/A"
+        five_year = fd.get("5_year", "N/A") if isinstance(fd, dict) else "N/A"
+
+        if lang == "hi":
+            return (
+                f"सेविंग्स अकाउंट दर: {savings}. "
+                f"FD 1 वर्ष: {one_year}, FD 5 वर्ष: {five_year}."
+            )
+        if lang == "mr":
+            return (
+                f"सेव्हिंग्स खाते दर: {savings}. "
+                f"FD 1 वर्ष: {one_year}, FD 5 वर्ष: {five_year}."
+            )
+        return (
+            f"Savings account rate: {savings}. "
+            f"FD 1 year: {one_year}, FD 5 year: {five_year}."
+        )
+
+    if any(k in q for k in ["scheme", "yojana", "योजना"]):
+        schemes = advanced_knowledge.get("schemes", {})
+        if not schemes:
+            return None
+        names = ", ".join(schemes.keys())
+        if lang == "hi":
+            return f"उपलब्ध योजनाएं: {names}."
+        if lang == "mr":
+            return f"उपलब्ध योजना: {names}."
+        return f"Available schemes: {names}."
+
+    return None
+
+
+def enhance_response_with_gemini(raw_answer: str, user_name: str, lang: str) -> str:
+    """Compatibility wrapper that routes to the configured refiner backend."""
+    _ = user_name
+    return refine_answer("", raw_answer, lang)
 
 
 def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str:
@@ -736,13 +914,41 @@ def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str
         raw_answer = get_account_status(lang)
     elif intent == "user_profile":
         raw_answer = get_user_profile(user, lang)
+    elif intent in {"kyc_update", "loan_query"}:
+        deterministic_knowledge = get_advanced_knowledge_answer(query, lang)
+        if deterministic_knowledge:
+            raw_answer = deterministic_knowledge
+        elif looks_like_advanced_knowledge_query(query):
+            raw_answer = vector_search_knowledge(query, lang)
+            if _is_uncertain_response(raw_answer, lang):
+                catalog_answer = faq_by_intent(intent, lang)
+                if catalog_answer:
+                    raw_answer = catalog_answer
+                else:
+                    raw_answer = vector_search_faq(query, lang)
+        else:
+            catalog_answer = faq_by_intent(intent, lang)
+            if catalog_answer:
+                raw_answer = catalog_answer
+            else:
+                raw_answer = vector_search_faq(query, lang)
     elif intent != "general":
-        # For non-general intents (loan/kyc etc.), try FAQ retrieval directly.
-        raw_answer = vector_search_faq(query, lang)
+        # Prefer deterministic intent-language FAQ when available.
+        catalog_answer = faq_by_intent(intent, lang)
+        if catalog_answer:
+            raw_answer = catalog_answer
+        else:
+            raw_answer = vector_search_faq(query, lang)
     elif not is_bank_related(query):
         raw_answer = unrelated_message(lang)
     else:
         raw_answer = vector_search_faq(query, lang)
+        if _is_uncertain_response(raw_answer, lang) and looks_like_advanced_knowledge_query(query):
+            deterministic_knowledge = get_advanced_knowledge_answer(query, lang)
+            if deterministic_knowledge:
+                raw_answer = deterministic_knowledge
+            else:
+                raw_answer = vector_search_knowledge(query, lang)
 
     # Fast-pass handoff messages to skip rewriting
     if "officer" in raw_answer.lower() or "अधिकारी" in raw_answer or "not related" in raw_answer.lower() or "संबंधित नहीं" in raw_answer:
@@ -750,6 +956,100 @@ def answer_query(user: dict, query: str, lang_hint: Optional[str] = None) -> str
 
     # Apply Gemini rewrite
     return enhance_response_with_gemini(raw_answer, user.get("name", "User"), lang)
+
+
+def get_follow_up_suggestions(query: str, lang_hint: Optional[str] = None) -> List[str]:
+    """Return exactly three smart follow-up questions in the user's language."""
+    lang = lang_hint if lang_hint in {"en", "hi", "mr"} else detect_language(query)
+    intent = detect_intent(query)
+
+    followups = {
+        "en": {
+            "account_balance": [
+                "Show last 5 transactions",
+                "Check FD rates",
+                "Show EMI for 20 lakh loan",
+            ],
+            "transactions": [
+                "What is my current balance?",
+                "Show account details",
+                "Check FD rates",
+            ],
+            "account_details": [
+                "Is my account active?",
+                "Show last 5 transactions",
+                "Check FD rates",
+            ],
+            "loan_query": [
+                "Show EMI for 20 lakh loan",
+                "Check FD rates",
+                "What is my current balance?",
+            ],
+            "general": [
+                "Show last 5 transactions",
+                "Check FD rates",
+                "Show EMI for 20 lakh loan",
+            ],
+        },
+        "hi": {
+            "account_balance": [
+                "पिछले 5 लेनदेन दिखाओ",
+                "FD की ब्याज दर बताओ",
+                "20 लाख लोन की EMI बताओ",
+            ],
+            "transactions": [
+                "मेरा वर्तमान बैलेंस बताओ",
+                "मेरा खाता विवरण दिखाओ",
+                "FD की ब्याज दर बताओ",
+            ],
+            "account_details": [
+                "क्या मेरा खाता सक्रिय है?",
+                "पिछले 5 लेनदेन दिखाओ",
+                "FD की ब्याज दर बताओ",
+            ],
+            "loan_query": [
+                "20 लाख लोन की EMI बताओ",
+                "होम लोन ब्याज दर क्या है?",
+                "FD की ब्याज दर बताओ",
+            ],
+            "general": [
+                "पिछले 5 लेनदेन दिखाओ",
+                "FD की ब्याज दर बताओ",
+                "20 लाख लोन की EMI बताओ",
+            ],
+        },
+        "mr": {
+            "account_balance": [
+                "माझे शेवटचे 5 व्यवहार दाखवा",
+                "FD चे व्याजदर तपासा",
+                "20 लाख कर्जाची EMI दाखवा",
+            ],
+            "transactions": [
+                "माझी सध्याची शिल्लक सांगा",
+                "माझे खाते तपशील दाखवा",
+                "FD चे व्याजदर तपासा",
+            ],
+            "account_details": [
+                "माझे खाते सक्रिय आहे का?",
+                "माझे शेवटचे 5 व्यवहार दाखवा",
+                "FD चे व्याजदर तपासा",
+            ],
+            "loan_query": [
+                "20 लाख कर्जाची EMI दाखवा",
+                "होम लोन व्याजदर किती आहे?",
+                "FD चे व्याजदर तपासा",
+            ],
+            "general": [
+                "माझे शेवटचे 5 व्यवहार दाखवा",
+                "FD चे व्याजदर तपासा",
+                "20 लाख कर्जाची EMI दाखवा",
+            ],
+        },
+    }
+
+    lang_map = followups.get(lang, followups["en"])
+    result = lang_map.get(intent) or lang_map.get("general") or followups["en"]["general"]
+    return result[:3]
 
 
 def run_cli() -> None:

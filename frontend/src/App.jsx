@@ -21,22 +21,35 @@ export default function App() {
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
 
-  const getSuggestionsForQuery = (query, lang) => {
-    const q = query.toLowerCase();
-    if (lang.startsWith('hi')) {
-      if (q.includes("बैलेंस") || q.includes("खाता")) return ["पिछले पांच लेनदेन", "मेरा खाता विवरण", "लोन ब्याज जानकारी"];
-      if (q.includes("लेनदेन") || q.includes("पिछले")) return ["मेरा बैलेंस बताओ", "मेरा खाता विवरण", "क्या मेरा खाता सक्रिय है?"];
-      return ["मेरा बैलेंस बताओ", "पिछले पांच लेनदेन", "मेरा खाता विवरण", "लोन ब्याज जानकारी"];
-    } else if (lang.startsWith('mr')) {
-      if (q.includes("शिल्लक") || q.includes("खाते")) return ["माझे शेवटचे पाच व्यवहार", "माझे खाते तपशील", "कर्ज व्याज माहिती"];
-      if (q.includes("व्यवहार") || q.includes("शेवटचे")) return ["माझी शिल्लक सांगा", "माझे खाते तपशील", "माझे खाते सक्रिय आहे का?"];
-      return ["माझी शिल्लक सांगा", "माझे शेवटचे पाच व्यवहार", "माझे खाते तपशील", "कर्ज व्याज माहिती"];
+  const toBackendLang = (uiLang) => {
+    const base = (uiLang || 'en').split('-')[0].toLowerCase();
+    return ['en', 'hi', 'mr'].includes(base) ? base : 'auto';
+  };
+
+  const runQueryFlow = async (queryText, langForQuery = language) => {
+    setStatusMessage(`"${queryText}"`);
+    setOrbState('thinking');
+
+    const resolvedInputLang = toBackendLang(langForQuery);
+    const chatRes = await processText(queryText, resolvedInputLang);
+    setStatusMessage(chatRes.response_text);
+    setCurrentSuggestions((chatRes.follow_ups || []).slice(0, 3));
+    setOrbState('speaking');
+
+    const audioBlob = await getTtsAudio(chatRes.response_text, chatRes.language || resolvedInputLang);
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    if (audioRef.current) {
+      audioRef.current.pause();
     }
-    // Default English
-    if (q.includes("balance")) return ["Show last 5 transactions", "My account details", "Is my account active?"];
-    if (q.includes("transaction") || q.includes("last")) return ["What is my balance?", "My account details", "Loan interest info"];
-    if (q.includes("loan") || q.includes("interest")) return ["Am I eligible for a loan?", "Check account balance", "What is the repo rate?"];
-    return ["Check account balance", "Last 5 transactions", "My account details", "Loan interest info"];
+    audioRef.current = new Audio(audioUrl);
+    await audioRef.current.play();
+
+    audioRef.current.onended = () => {
+      setOrbState('idle');
+      setStatusMessage('How can I help you today?');
+      setSessionActive(false);
+    };
   };
 
   const stopAudio = (e) => {
@@ -60,30 +73,8 @@ export default function App() {
 
       recog.onresult = async (event) => {
         const transcript = event.results[0][0].transcript;
-        setStatusMessage(`"${transcript}"`);
-        setOrbState('thinking');
-
         try {
-          const chatRes = await processText(transcript);
-          setStatusMessage(chatRes.response_text);
-          const suggestions = getSuggestionsForQuery(transcript, chatRes.language || language);
-          setCurrentSuggestions(suggestions);
-          setOrbState('speaking');
-
-          const audioBlob = await getTtsAudio(chatRes.response_text, chatRes.language);
-          const audioUrl = URL.createObjectURL(audioBlob);
-
-          if (audioRef.current) {
-            audioRef.current.pause();
-          }
-          audioRef.current = new Audio(audioUrl);
-          await audioRef.current.play();
-
-          audioRef.current.onended = () => {
-            setOrbState('idle');
-            setStatusMessage('How can I help you today?');
-            setSessionActive(false);
-          };
+          await runQueryFlow(transcript, language);
         } catch (err) {
           console.error(err);
           setStatusMessage('Error: ' + err.message);
@@ -248,7 +239,21 @@ export default function App() {
           {currentSuggestions ? (
             <div className="flex flex-col items-center gap-4">
               <p className="text-gray-500 text-sm font-medium">Recommended for you:</p>
-              <SuggestionChips language={language} customList={currentSuggestions} />
+              <SuggestionChips
+                language={language}
+                customList={currentSuggestions}
+                onPick={async (pickedText) => {
+                  setSessionActive(true);
+                  try {
+                    await runQueryFlow(pickedText, language);
+                  } catch (err) {
+                    console.error(err);
+                    setStatusMessage('Error: ' + err.message);
+                    setOrbState('idle');
+                    setSessionActive(false);
+                  }
+                }}
+              />
             </div>
           ) : (
             <BankInfoCards />

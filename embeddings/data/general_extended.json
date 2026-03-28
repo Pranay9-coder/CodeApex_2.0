@@ -1,0 +1,200 @@
+[
+  {
+    "intent": "fd_rates",
+    "language": "en",
+    "question": "What are your fixed deposit rates?",
+    "answer": "Our FD rates vary by tenure. Typical rates are around 6.5% for 1 year and 7.0% for 5 years, with additional benefit for senior citizens."
+  },
+  {
+    "intent": "fd_rates",
+    "language": "hi",
+    "question": "फिक्स्ड डिपॉजिट की ब्याज दर क्या है?",
+    "answer": "FD की दरें अवधि के अनुसार बदलती हैं। सामान्यतः 1 वर्ष के लिए लगभग 6.5% और 5 वर्ष के लिए लगभग 7.0% दर मिलती है, वरिष्ठ नागरिकों को अतिरिक्त लाभ मिलता है।"
+  },
+  {
+    "intent": "fd_rates",
+    "language": "mr",
+    "question": "FD चे व्याजदर किती आहेत?",
+    "answer": "FD चे व्याजदर मुदतीनुसार बदलतात. साधारणपणे 1 वर्षासाठी सुमारे 6.5% आणि 5 वर्षासाठी सुमारे 7.0% दर मिळतो, ज्येष्ठ नागरिकांना अतिरिक्त लाभ मिळतो."
+  },
+  {
+    "intent": "rd_info",
+    "language": "en",
+    "question": "How does recurring deposit work?",
+    "answer": "In RD, you deposit a fixed amount every month for a chosen tenure. Interest is compounded and paid at maturity along with principal."
+  },
+  {
+    "intent": "rd_info",
+    "language": "hi",
+    "question": "RD कैसे काम करता है?",
+    "answer": "RD में आप हर महीने तय राशि जमा करते हैं। अवधि पूरी होने पर मूलधन और संचित ब्याज एक साथ मिलता है।"
+  },
+  {
+    "intent": "rd_info",
+    "language": "mr",
+    "question": "RD कसे काम करते?",
+    "answer": "RD मध्ये तुम्ही दर महिन्याला ठराविक रक्कम जमा करता. मुदत पूर्ण झाल्यावर मूळ रक्कम आणि व्याज एकत्र मिळते."
+  },
+  {
+    "intent": "card_block",
+    "language": "en",
+    "question": "My debit card is lost, how to block it?",
+    "answer": "You can block your card instantly via mobile banking, internet banking, customer care, or by visiting nearest branch. Block immediately to prevent misuse."
+  },
+  {
+    "intent": "card_block",
+    "language": "hi",
+    "question": "मेरा डेबिट कार्ड खो गया है, ब्लॉक कैसे करें?",
+    "answer": "आप मोबाइल बैंकिंग, इंटरनेट बैंकिंग, कस्टमर केयर या शाखा में जाकर कार्ड तुरंत ब्लॉक कर सकते हैं। दुरुपयोग रोकने के लिए तुरंत ब्लॉक करें।"
+  },
+  {
+    "intent": "card_block",
+    "language": "mr",
+    "question": "माझे डेबिट कार्ड हरवले, ब्लॉक कसे करायचे?",
+    "answer": "तुम्ही मोबाइल बँकिंग, इंटरनेट बँकिंग, ग्राहक सेवा किंवा शाखेत जाऊन कार्ड त्वरित ब्लॉक करू शकता. गैरवापर टाळण्यासाठी लगेच ब्लॉक करा."
+  },
+  {
+    "intent": "cheque_book",
+    "language": "en",
+    "question": "How can I request a cheque book?",
+    "answer": "You can request a cheque book through mobile banking, internet banking, ATM, or by submitting a request form at your branch."
+  },
+  {
+    "intent": "cheque_book",
+    "language": "hi",
+    "question": "चेकबुक कैसे मंगाएं?",
+    "answer": "आप मोबाइल बैंकिंग, इंटरनेट बैंकिंग, ATM या शाखा में अनुरोध फॉर्म देकर चेकबुक मंगवा सकते हैं।"
+  },
+  {
+    "intent": "cheque_book",
+    "language": "mr",
+    "question": "चेकबुक कसे मागवायचे?",
+    "answer": "तुम्ही मोबाइल बँकिंग, इंटरनेट बँकिंग, ATM किंवा शाखेत अर्ज देऊन चेकबुक मागवू शकता."
+  },
+  {
+    "intent": "net_banking",
+    "language": "en",
+    "question": "How to activate net banking?",
+    "answer": "You can activate net banking from the bank portal using account details and registered mobile OTP. Branch activation is also available if needed."
+  },
+  {
+    "intent": "net_banking",
+    "language": "hi",
+    "question": "नेट बैंकिंग कैसे चालू करें?",
+    "answer": "आप बैंक पोर्टल पर खाता विवरण और रजिस्टर्ड मोबाइल OTP से नेट बैंकिंग सक्रिय कर सकते हैं। आवश्यकता होने पर शाखा से भी सक्रिय कराया जा सकता है।"
+  },
+  {
+    "intent": "net_banking",
+    "language": "mr",
+    "question": "नेट बँकिंग कसे सुरू करायचे?",
+    "answer": "तुम्ही बँक पोर्टलवर खाते तपशील आणि नोंदणीकृत मोबाईल OTP वापरून नेट बँकिंग सुरू करू शकता. गरज असल्यास शाखेतूनही सक्रिय करता येते."
+  },
+  {
+    "intent": "atm_pin_reset",
+    "language": "en",
+    "question": "How do I reset my ATM PIN?",
+    "answer": "You can reset ATM PIN through ATM PIN generation option, mobile banking, or internet banking. Keep OTP and debit card handy."
+  },
+  {
+    "intent": "atm_pin_reset",
+    "language": "hi",
+    "question": "ATM PIN रीसेट कैसे करें?",
+    "answer": "आप ATM में PIN जनरेशन विकल्प, मोबाइल बैंकिंग या इंटरनेट बैंकिंग से PIN रीसेट कर सकते हैं। OTP और डेबिट कार्ड तैयार रखें।"
+  },
+  {
+    "intent": "atm_pin_reset",
+    "language": "mr",
+    "question": "ATM PIN रीसेट कसा करायचा?",
+    "answer": "तुम्ही ATM मधील PIN जनरेशन पर्याय, मोबाइल बँकिंग किंवा इंटरनेट बँकिंगने PIN रीसेट करू शकता. OTP आणि डेबिट कार्ड जवळ ठेवा."
+  },
+  {
+    "intent": "nominee_update",
+    "language": "en",
+    "question": "How can I add or update nominee?",
+    "answer": "You can add or update nominee via branch form or supported digital banking channels. Keep nominee identity details ready."
+  },
+  {
+    "intent": "nominee_update",
+    "language": "hi",
+    "question": "नॉमिनी जोड़ना या बदलना कैसे करें?",
+    "answer": "आप शाखा फॉर्म या उपलब्ध डिजिटल बैंकिंग माध्यम से नॉमिनी जोड़/अपडेट कर सकते हैं। नॉमिनी की पहचान संबंधी जानकारी साथ रखें।"
+  },
+  {
+    "intent": "nominee_update",
+    "language": "mr",
+    "question": "नॉमिनी जोडणे किंवा बदलणे कसे करायचे?",
+    "answer": "तुम्ही शाखेतील फॉर्म किंवा उपलब्ध डिजिटल बँकिंग माध्यमातून नॉमिनी जोडू/अपडेट करू शकता. नॉमिनीची ओळख माहिती तयार ठेवा."
+  },
+  {
+    "intent": "branch_info",
+    "language": "en",
+    "question": "What are branch working hours and IFSC details?",
+    "answer": "Most branches operate Monday to Saturday during standard banking hours. You can find exact branch timing and IFSC in your passbook, statement, or official branch locator."
+  },
+  {
+    "intent": "branch_info",
+    "language": "hi",
+    "question": "शाखा का समय और IFSC कैसे पता करें?",
+    "answer": "अधिकांश शाखाएं सोमवार से शनिवार सामान्य बैंकिंग समय में खुलती हैं। सटीक समय और IFSC पासबुक, स्टेटमेंट या आधिकारिक ब्रांच लोकेटर से देखें।"
+  },
+  {
+    "intent": "branch_info",
+    "language": "mr",
+    "question": "शाखेची वेळ आणि IFSC कसा मिळेल?",
+    "answer": "बहुतेक शाखा सोमवार ते शनिवार नियमित बँक वेळेत सुरू असतात. अचूक वेळ आणि IFSC पासबुक, स्टेटमेंट किंवा अधिकृत ब्रांच लोकेटरमध्ये मिळेल."
+  },
+  {
+    "intent": "transaction_dispute",
+    "language": "en",
+    "question": "A wrong amount was debited. How to raise dispute?",
+    "answer": "Report the disputed transaction immediately via customer care, app dispute option, or branch. Keep transaction ID, date, and amount for faster resolution."
+  },
+  {
+    "intent": "transaction_dispute",
+    "language": "hi",
+    "question": "गलत कटौती हुई है, शिकायत कैसे करें?",
+    "answer": "विवादित लेनदेन की तुरंत शिकायत कस्टमर केयर, ऐप के डिस्प्यूट विकल्प या शाखा में करें। ट्रांजैक्शन आईडी, तारीख और राशि तैयार रखें।"
+  },
+  {
+    "intent": "transaction_dispute",
+    "language": "mr",
+    "question": "चुकीची रक्कम डेबिट झाली, तक्रार कशी करायची?",
+    "answer": "विवादित व्यवहाराची त्वरित तक्रार ग्राहक सेवा, अॅपमधील डिस्प्यूट पर्याय किंवा शाखेत करा. व्यवहार आयडी, तारीख आणि रक्कम तयार ठेवा."
+  },
+  {
+    "intent": "upi_limits",
+    "language": "en",
+    "question": "What is the UPI transaction limit?",
+    "answer": "UPI limits depend on bank and NPCI rules. In many cases daily limit is up to 1 lakh, but category-based and app-specific limits may apply."
+  },
+  {
+    "intent": "upi_limits",
+    "language": "hi",
+    "question": "UPI ट्रांजैक्शन लिमिट क्या है?",
+    "answer": "UPI सीमा बैंक और NPCI नियमों पर निर्भर करती है। कई मामलों में दैनिक सीमा 1 लाख तक होती है, लेकिन श्रेणी और ऐप के अनुसार अलग सीमा हो सकती है।"
+  },
+  {
+    "intent": "upi_limits",
+    "language": "mr",
+    "question": "UPI व्यवहार मर्यादा किती आहे?",
+    "answer": "UPI मर्यादा बँक आणि NPCI नियमांवर अवलंबून असते. अनेक वेळा दैनिक मर्यादा 1 लाखपर्यंत असते, परंतु प्रकार आणि अॅपनुसार मर्यादा वेगळी असू शकते."
+  },
+  {
+    "intent": "kyc_update",
+    "language": "en",
+    "question": "Which documents are needed for KYC update?",
+    "answer": "Typically required documents are identity proof, address proof, PAN, and recent photograph. Some cases may require additional verification."
+  },
+  {
+    "intent": "kyc_update",
+    "language": "hi",
+    "question": "KYC अपडेट के लिए कौन से दस्तावेज चाहिए?",
+    "answer": "आमतौर पर पहचान प्रमाण, पता प्रमाण, PAN और हाल की फोटो आवश्यक होते हैं। कुछ मामलों में अतिरिक्त सत्यापन भी हो सकता है।"
+  },
+  {
+    "intent": "kyc_update",
+    "language": "mr",
+    "question": "KYC अपडेटसाठी कोणती कागदपत्रे लागतात?",
+    "answer": "साधारणतः ओळखपत्र, पत्त्याचा पुरावा, PAN आणि अलीकडील फोटो आवश्यक असतात. काही प्रकरणांमध्ये अतिरिक्त पडताळणी लागू शकते."
+  }
+]

@@ -8,10 +8,20 @@ from io import BytesIO
 from flask import Flask, jsonify, render_template, request, send_file, session
 from gtts import gTTS
 
-from embeddings.search import USER_BY_MOBILE, answer_query, detect_language, get_refiner_status
+from embeddings.search import (
+    USER_BY_MOBILE,
+    answer_query,
+    detect_language,
+    get_follow_up_suggestions,
+    get_refiner_status,
+)
 
 app = Flask(__name__, template_folder="web/templates", static_folder="web/static")
 app.config["SECRET_KEY"] = os.getenv("BANK_ASSISTANT_SECRET", "dev-secret-change-me")
+
+
+def _contains_devanagari(text: str) -> bool:
+    return any("\u0900" <= ch <= "\u097f" for ch in text)
 
 
 @app.get("/")
@@ -79,13 +89,20 @@ def chat() -> tuple:
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
-    resolved_lang = detect_language(message) if requested_lang == "auto" else requested_lang
+    # If query clearly contains Devanagari, prefer automatic language detection
+    # even when frontend accidentally sends English as the requested language.
+    if requested_lang == "auto" or (requested_lang == "en" and _contains_devanagari(message)):
+        resolved_lang = detect_language(message)
+    else:
+        resolved_lang = requested_lang
+
     if resolved_lang not in {"en", "hi", "mr"}:
         resolved_lang = "en"
 
     answer = answer_query(user, message, lang_hint=resolved_lang)
+    follow_ups = get_follow_up_suggestions(message, lang_hint=resolved_lang)
 
-    return jsonify({"answer": answer, "language": resolved_lang}), 200
+    return jsonify({"answer": answer, "language": resolved_lang, "follow_ups": follow_ups}), 200
 
 
 @app.post("/api/tts")
@@ -101,6 +118,9 @@ def tts() -> tuple:
 
     if not text:
         return jsonify({"error": "Text is required"}), 400
+
+    if lang == "auto" or (lang == "en" and _contains_devanagari(text)):
+        lang = detect_language(text)
 
     if lang not in {"en", "hi", "mr"}:
         lang = "en"
