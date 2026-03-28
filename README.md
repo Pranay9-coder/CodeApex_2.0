@@ -33,7 +33,7 @@ Expanded vector database to interpret complex nested JSONs like \dvanced_bank_k
 
 ### 2) Clone project
 \\\ash
-git clone https://github.com/Pranay9-coder/CodeApex_2.0.git
+git clone https://github.com/Rohit-TecH306/CodeApex_2.0.git
 cd CodeApex_2.0
 \\\
 
