@@ -5,6 +5,7 @@ import VoiceOrb from './components/VoiceOrb';
 import StatusText from './components/StatusText';
 import BankInfoCards from './components/BankInfoCards';
 import SuggestionChips from './components/SuggestionChips';
+import SidebarEmi from './components/SidebarEmi';
 import { loginByMobile, processText, getTtsAudio } from './services/api';
 
 export default function App() {
@@ -192,6 +193,7 @@ export default function App() {
 
 
       <Header />
+      <SidebarEmi />
 
       <div className="absolute top-6 right-8 z-20">
         <select
