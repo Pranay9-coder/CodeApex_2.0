@@ -10,6 +10,8 @@ from gtts import gTTS
 
 from embeddings.search import (
     USER_BY_MOBILE,
+    CREDIT_PROFILE_BY_USER,
+    TXNS_BY_USER,
     answer_query,
     detect_language,
     get_follow_up_suggestions,
@@ -71,6 +73,26 @@ def logout() -> tuple:
     return jsonify({"ok": True}), 200
 
 
+@app.get("/api/user-data")
+def user_data() -> tuple:
+    mobile = session.get("mobile")
+    if not mobile:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user = USER_BY_MOBILE.get(mobile)
+    if not user:
+        return jsonify({"error": "Session expired"}), 401
+    
+    user_id = user.get("user_id")
+    profile = CREDIT_PROFILE_BY_USER.get(user_id, {})
+    txns = TXNS_BY_USER.get(user_id, [])
+    
+    return jsonify({
+        "credit_profile": profile,
+        "transactions": txns
+    }), 200
+
+
 @app.post("/api/chat")
 def chat() -> tuple:
     mobile = session.get("mobile")
@@ -103,6 +125,59 @@ def chat() -> tuple:
     follow_ups = get_follow_up_suggestions(message, lang_hint=resolved_lang)
 
     return jsonify({"answer": answer, "language": resolved_lang, "follow_ups": follow_ups}), 200
+
+
+@app.post("/api/calculate-emi")
+def calculate_emi_endpoint() -> tuple:
+    mobile = session.get("mobile")
+    if not mobile:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user = USER_BY_MOBILE.get(mobile)
+    if not user:
+        return jsonify({"error": "Session expired"}), 401
+        
+    user_id = user["user_id"]
+    profile = CREDIT_PROFILE_BY_USER.get(user_id)
+    
+    if not profile:
+        return jsonify({"error": "No credit profile found for this user."}), 404
+
+    payload = request.get_json(silent=True) or {}
+    principal = float(payload.get("principal", 0))
+    duration_years = float(payload.get("duration", 0))
+    
+    if principal <= 0 or duration_years <= 0:
+        return jsonify({"error": "Invalid principal or duration"}), 400
+
+    # Determine Interest Rate based on CIBIL score
+    cibil = profile.get("cibil_score", 0)
+    if cibil >= 800:
+        annual_rate = 8.5
+    elif cibil >= 700:
+        annual_rate = 10.0
+    elif cibil >= 600:
+        annual_rate = 12.0
+    else:
+        annual_rate = 15.0
+
+    r = (annual_rate / 12) / 100
+    n = duration_years * 12
+    try:
+        emi = principal * r * ((1 + r)**n) / (((1 + r)**n) - 1)
+        emi = round(emi, 2)
+    except ZeroDivisionError:
+        emi = 0
+
+    return jsonify({
+        "principal": principal,
+        "duration_years": duration_years,
+        "interest_rate": annual_rate,
+        "cibil_score": cibil,
+        "emi": emi,
+        "credit_rating": profile.get("credit_rating", "N/A"),
+        "loan_approval_likelihood": profile.get("loan_approval_likelihood", "N/A")
+    }), 200
 
 
 @app.post("/api/tts")

@@ -4,18 +4,20 @@ export default function StatusText({ state, text }) {
   // state: "idle", "listening", "speaking"
   
   return (
-    <div className="flex flex-col items-center justify-center mt-8 mb-12 h-24">
-      <AnimatePresence mode="wait">
-        <motion.h2
-          key={text}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="text-2xl md:text-3xl font-bold text-gray-900 text-center max-w-2xl px-4">
-          {text}
-        </motion.h2>
-      </AnimatePresence>
-      
+    <div className="flex flex-col items-center justify-center mt-4 mb-6 w-full px-4">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100 w-full max-w-2xl max-h-48 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={text}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="text-base md:text-lg text-gray-800 font-medium text-center whitespace-pre-wrap leading-relaxed">
+            {text}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
       <div className="flex items-center gap-2 mt-4">
         <div className="relative flex h-3 w-3">
           {state !== 'idle' && (

@@ -45,6 +45,14 @@ if extended_faq_path.exists():
 with open(DATA_DIR / "advanced_bank_knowledge.json", encoding="utf-8") as f:
     advanced_knowledge = json.load(f)
 
+# Load credit profiles
+credit_profiles_path = DATA_DIR / "credit_profiles.json"
+if credit_profiles_path.exists():
+    with open(credit_profiles_path, encoding="utf-8") as f:
+        credit_profiles = json.load(f)
+else:
+    credit_profiles = []
+
 # 4) Build documents
 records = []
 
@@ -148,6 +156,27 @@ for category, content in advanced_knowledge.items():
                 }
             }
         )
+
+for cp in credit_profiles:
+    text = (
+        f"Credit profile for User ID: {cp['user_id']}. "
+        f"Monthly income: {cp['monthly_income']}. "
+        f"Employment type: {cp['employment_type']}. "
+        f"CIBIL score: {cp.get('cibil_score', 'N/A')}. "
+        f"Credit Rating: {cp.get('credit_rating', 'N/A')}. "
+        f"Total Credit Limit: {cp.get('total_credit_limit', 0)}. "
+        f"Existing Loans: {json.dumps(cp.get('existing_loans', []))}."
+    )
+    records.append(
+        {
+            "document": text,
+            "metadata": {
+                "type": "credit_profile",
+                "user_id": cp["user_id"],
+                "language": "en",
+            },
+        }
+    )
 
 # 5) Encode and store
 print("Generating embeddings...")

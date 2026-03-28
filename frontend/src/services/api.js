@@ -59,3 +59,26 @@ export async function stopTts() {
   });
   if (!res.ok) throw new Error("Stop TTS failed");
 }
+
+export async function calculateEmi(principal, duration) {
+  const res = await fetch(`${API_BASE}/calculate-emi`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ principal, duration }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "EMI calculation failed");
+  return data;
+}
+
+export async function getUserData() {
+  const res = await fetch(`${API_BASE}/user-data`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Failed to fetch user data");
+  return data;
+}

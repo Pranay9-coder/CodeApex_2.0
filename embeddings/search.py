@@ -45,8 +45,16 @@ if extended_faq_path.exists():
 with open(DATA_DIR / "advanced_bank_knowledge.json", encoding="utf-8") as f:
     advanced_knowledge = json.load(f)
 
+credit_profiles_path = DATA_DIR / "credit_profiles.json"
+if credit_profiles_path.exists():
+    with open(credit_profiles_path, encoding="utf-8") as f:
+        credit_profiles = json.load(f)
+else:
+    credit_profiles = []
+
 USER_BY_MOBILE: Dict[str, dict] = {u["mobile"]: u for u in users}
 ACCOUNT_BY_USER: Dict[str, dict] = {a["user_id"]: a for a in accounts}
+CREDIT_PROFILE_BY_USER: Dict[str, dict] = {c["user_id"]: c for c in credit_profiles}
 TXNS_BY_USER: Dict[str, List[dict]] = {}
 for t in transactions:
     TXNS_BY_USER.setdefault(t["user_id"], []).append(t)
@@ -384,6 +392,8 @@ def is_bank_related(query: str) -> bool:
     q = normalize(query)
     keywords = [
         "bank", "account", "balance", "transaction", "loan", "kyc", "atm", "card", "upi", "neft", "rtgs",
+        "yojana", "pmay", "awas", "kisan", "pradhan mantri", "scheme", "sukanya", "samriddhi", "ppf",
+        "योजना", "आवास", "किसान", "प्रधानमंत्री",
         "बैंक", "खाता", "बैलेंस", "लेनदेन", "लोन", "कार्ड", "पैसा", "केवाईसी",
         "बँक", "खाते", "शिल्लक", "व्यवहार", "कर्ज", "कार्ड", "पैसे",
         "mini statement", "statement", "active", "interest", "pin",

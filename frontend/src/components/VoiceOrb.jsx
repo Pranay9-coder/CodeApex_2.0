@@ -40,8 +40,8 @@ export default function VoiceOrb({ state }) {
   };
 
   return (
-    <div className="flex justify-center items-center py-16">
-      <div className="relative w-64 h-64 flex justify-center items-center">
+    <div className="flex justify-center items-center py-6">
+      <div className="relative w-40 h-40 flex justify-center items-center">
         {/* Outer glowing aura */}
         <motion.div
           animate={state}

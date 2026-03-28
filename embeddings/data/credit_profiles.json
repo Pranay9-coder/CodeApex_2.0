@@ -1,0 +1,2826 @@
+[
+  {
+    "user_id": "USR001",
+    "monthly_income": 56574,
+    "employment_type": "farmer",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 65145,
+        "emi": 13736,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 7583,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 7583,
+    "defaults": 1,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR002",
+    "monthly_income": 29728,
+    "employment_type": "student",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 33468,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 33468,
+    "defaults": 0,
+    "cibil_score": 840,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR003",
+    "monthly_income": 25734,
+    "employment_type": "senior",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 209898,
+        "emi": 3450,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 640,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR004",
+    "monthly_income": 19190,
+    "employment_type": "salaried",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 22669,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 22669,
+    "defaults": 0,
+    "cibil_score": 890,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR005",
+    "monthly_income": 24716,
+    "employment_type": "business",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 212626,
+        "emi": 10112,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR006",
+    "monthly_income": 61325,
+    "employment_type": "farmer",
+    "credit_history_years": 2,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 97150,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 97150,
+    "defaults": 1,
+    "cibil_score": 700,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR007",
+    "monthly_income": 55349,
+    "employment_type": "student",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 55023,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 55023,
+    "defaults": 1,
+    "cibil_score": 720,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR008",
+    "monthly_income": 31561,
+    "employment_type": "senior",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 34945,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 34945,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR009",
+    "monthly_income": 71609,
+    "employment_type": "salaried",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 354737,
+        "emi": 4293,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 13233,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 13233,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR010",
+    "monthly_income": 79394,
+    "employment_type": "business",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 184594,
+        "emi": 6722,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 4951,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 4951,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR011",
+    "monthly_income": 32482,
+    "employment_type": "farmer",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 126294,
+        "emi": 2511,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 26985,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 26985,
+    "defaults": 1,
+    "cibil_score": 770,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR012",
+    "monthly_income": 42880,
+    "employment_type": "student",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 93664,
+        "emi": 14023,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 40222,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 40222,
+    "defaults": 1,
+    "cibil_score": 670,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR013",
+    "monthly_income": 26254,
+    "employment_type": "senior",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 6388,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 6388,
+    "defaults": 1,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR014",
+    "monthly_income": 57300,
+    "employment_type": "salaried",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 133311,
+        "emi": 5331,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR015",
+    "monthly_income": 34005,
+    "employment_type": "business",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 90070,
+        "emi": 5508,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 47440,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 47440,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR016",
+    "monthly_income": 20926,
+    "employment_type": "farmer",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 463681,
+        "emi": 4447,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 740,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR017",
+    "monthly_income": 57586,
+    "employment_type": "student",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 184850,
+        "emi": 6708,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 21685,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 21685,
+    "defaults": 1,
+    "cibil_score": 770,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR018",
+    "monthly_income": 79269,
+    "employment_type": "senior",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 437575,
+        "emi": 5998,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 47768,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 47768,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR019",
+    "monthly_income": 28989,
+    "employment_type": "salaried",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 148769,
+        "emi": 6861,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 83434,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 83434,
+    "defaults": 1,
+    "cibil_score": 640,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR020",
+    "monthly_income": 46336,
+    "employment_type": "business",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 277930,
+        "emi": 12844,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 670,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR021",
+    "monthly_income": 51275,
+    "employment_type": "farmer",
+    "credit_history_years": 8,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 44746,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 44746,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR022",
+    "monthly_income": 54146,
+    "employment_type": "student",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 290913,
+        "emi": 11105,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 18300,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 18300,
+    "defaults": 0,
+    "cibil_score": 870,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR023",
+    "monthly_income": 26456,
+    "employment_type": "senior",
+    "credit_history_years": 8,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 430306,
+        "emi": 8401,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 24755,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 24755,
+    "defaults": 1,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR024",
+    "monthly_income": 42844,
+    "employment_type": "salaried",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 181310,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 181310,
+    "defaults": 0,
+    "cibil_score": 870,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR025",
+    "monthly_income": 21321,
+    "employment_type": "business",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 42646,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 42646,
+    "defaults": 0,
+    "cibil_score": 740,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR026",
+    "monthly_income": 64098,
+    "employment_type": "farmer",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 225738,
+        "emi": 3424,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 14538,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 14538,
+    "defaults": 1,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR027",
+    "monthly_income": 61763,
+    "employment_type": "student",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 89718,
+        "emi": 9329,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR028",
+    "monthly_income": 27523,
+    "employment_type": "senior",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 760,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR029",
+    "monthly_income": 16153,
+    "employment_type": "salaried",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 92639,
+        "emi": 6129,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 155071,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 155071,
+    "defaults": 0,
+    "cibil_score": 740,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR030",
+    "monthly_income": 34352,
+    "employment_type": "business",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 379194,
+        "emi": 6783,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 28238,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 28238,
+    "defaults": 1,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR031",
+    "monthly_income": 20598,
+    "employment_type": "farmer",
+    "credit_history_years": 9,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 860,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR032",
+    "monthly_income": 64189,
+    "employment_type": "student",
+    "credit_history_years": 10,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 7499,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 7499,
+    "defaults": 1,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR033",
+    "monthly_income": 76654,
+    "employment_type": "senior",
+    "credit_history_years": 2,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 52306,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 52306,
+    "defaults": 0,
+    "cibil_score": 850,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR034",
+    "monthly_income": 34041,
+    "employment_type": "salaried",
+    "credit_history_years": 8,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 126352,
+        "emi": 8820,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 65650,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 65650,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR035",
+    "monthly_income": 30150,
+    "employment_type": "business",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 196136,
+        "emi": 4505,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 770,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR036",
+    "monthly_income": 36000,
+    "employment_type": "farmer",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 212426,
+        "emi": 14465,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 40789,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 40789,
+    "defaults": 1,
+    "cibil_score": 720,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR037",
+    "monthly_income": 71165,
+    "employment_type": "student",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 28994,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 28994,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR038",
+    "monthly_income": 42164,
+    "employment_type": "senior",
+    "credit_history_years": 2,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 132254,
+        "emi": 8305,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 56091,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 56091,
+    "defaults": 0,
+    "cibil_score": 870,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR039",
+    "monthly_income": 23677,
+    "employment_type": "salaried",
+    "credit_history_years": 5,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 810,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR040",
+    "monthly_income": 51725,
+    "employment_type": "business",
+    "credit_history_years": 6,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 348449,
+        "emi": 9898,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 482,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 482,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR041",
+    "monthly_income": 63388,
+    "employment_type": "farmer",
+    "credit_history_years": 6,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 308899,
+        "emi": 7638,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 42149,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 42149,
+    "defaults": 1,
+    "cibil_score": 700,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR042",
+    "monthly_income": 48686,
+    "employment_type": "student",
+    "credit_history_years": 2,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 540,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR043",
+    "monthly_income": 60764,
+    "employment_type": "senior",
+    "credit_history_years": 1,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR044",
+    "monthly_income": 39329,
+    "employment_type": "salaried",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 252982,
+        "emi": 5008,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR045",
+    "monthly_income": 49981,
+    "employment_type": "business",
+    "credit_history_years": 1,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 120561,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 120561,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR046",
+    "monthly_income": 27376,
+    "employment_type": "farmer",
+    "credit_history_years": 5,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 810,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR047",
+    "monthly_income": 37076,
+    "employment_type": "student",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 840,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR048",
+    "monthly_income": 43295,
+    "employment_type": "senior",
+    "credit_history_years": 8,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 190807,
+        "emi": 13881,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 19413,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 19413,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR049",
+    "monthly_income": 39271,
+    "employment_type": "salaried",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 135414,
+        "emi": 14558,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 40035,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 40035,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR050",
+    "monthly_income": 51651,
+    "employment_type": "business",
+    "credit_history_years": 6,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 490845,
+        "emi": 3617,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 93484,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 93484,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR051",
+    "monthly_income": 61551,
+    "employment_type": "farmer",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR052",
+    "monthly_income": 62339,
+    "employment_type": "student",
+    "credit_history_years": 9,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 86212,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 86212,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR053",
+    "monthly_income": 45395,
+    "employment_type": "senior",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 428778,
+        "emi": 4586,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 87749,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 87749,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR054",
+    "monthly_income": 40557,
+    "employment_type": "salaried",
+    "credit_history_years": 9,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 640,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR055",
+    "monthly_income": 77807,
+    "employment_type": "business",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 128759,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 128759,
+    "defaults": 1,
+    "cibil_score": 750,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR056",
+    "monthly_income": 34640,
+    "employment_type": "farmer",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 72462,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 72462,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR057",
+    "monthly_income": 26134,
+    "employment_type": "student",
+    "credit_history_years": 10,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 35203,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 35203,
+    "defaults": 0,
+    "cibil_score": 890,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR058",
+    "monthly_income": 68709,
+    "employment_type": "senior",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 207915,
+        "emi": 4742,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 650,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR059",
+    "monthly_income": 20637,
+    "employment_type": "salaried",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 37960,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 37960,
+    "defaults": 1,
+    "cibil_score": 540,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR060",
+    "monthly_income": 27532,
+    "employment_type": "business",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 340449,
+        "emi": 10934,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 33597,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 33597,
+    "defaults": 1,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR061",
+    "monthly_income": 45493,
+    "employment_type": "farmer",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 94382,
+        "emi": 14403,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 670,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR062",
+    "monthly_income": 40359,
+    "employment_type": "student",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 439057,
+        "emi": 6175,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 94400,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 94400,
+    "defaults": 0,
+    "cibil_score": 670,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR063",
+    "monthly_income": 61645,
+    "employment_type": "senior",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 178384,
+        "emi": 10401,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 700,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR064",
+    "monthly_income": 16596,
+    "employment_type": "salaried",
+    "credit_history_years": 1,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 47722,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 47722,
+    "defaults": 1,
+    "cibil_score": 640,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR065",
+    "monthly_income": 62693,
+    "employment_type": "business",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 222969,
+        "emi": 4468,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 650,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR066",
+    "monthly_income": 59230,
+    "employment_type": "farmer",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 177763,
+        "emi": 5480,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 27765,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 27765,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR067",
+    "monthly_income": 72077,
+    "employment_type": "student",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 68803,
+        "emi": 8081,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 44293,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 44293,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR068",
+    "monthly_income": 77582,
+    "employment_type": "senior",
+    "credit_history_years": 6,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 309755,
+        "emi": 2435,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 10976,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 10976,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR069",
+    "monthly_income": 16733,
+    "employment_type": "salaried",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 810,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR070",
+    "monthly_income": 54762,
+    "employment_type": "business",
+    "credit_history_years": 8,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 10964,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 10964,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR071",
+    "monthly_income": 47319,
+    "employment_type": "farmer",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 196536,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 196536,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR072",
+    "monthly_income": 61143,
+    "employment_type": "student",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 81646,
+        "emi": 6843,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 101620,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 101620,
+    "defaults": 1,
+    "cibil_score": 850,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR073",
+    "monthly_income": 56584,
+    "employment_type": "senior",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 20525,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 20525,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR074",
+    "monthly_income": 78634,
+    "employment_type": "salaried",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR075",
+    "monthly_income": 67536,
+    "employment_type": "business",
+    "credit_history_years": 3,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 499762,
+        "emi": 7159,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 149182,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 149182,
+    "defaults": 1,
+    "cibil_score": 650,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR076",
+    "monthly_income": 24404,
+    "employment_type": "farmer",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 560,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR077",
+    "monthly_income": 40145,
+    "employment_type": "student",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 840,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR078",
+    "monthly_income": 31023,
+    "employment_type": "senior",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 45024,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 45024,
+    "defaults": 0,
+    "cibil_score": 770,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR079",
+    "monthly_income": 55327,
+    "employment_type": "salaried",
+    "credit_history_years": 2,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 25745,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 25745,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR080",
+    "monthly_income": 46424,
+    "employment_type": "business",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 41756,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 41756,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR081",
+    "monthly_income": 25351,
+    "employment_type": "farmer",
+    "credit_history_years": 1,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 510,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR082",
+    "monthly_income": 19681,
+    "employment_type": "student",
+    "credit_history_years": 10,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 860,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR083",
+    "monthly_income": 28177,
+    "employment_type": "senior",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 40918,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 40918,
+    "defaults": 1,
+    "cibil_score": 590,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR084",
+    "monthly_income": 41552,
+    "employment_type": "salaried",
+    "credit_history_years": 2,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 182538,
+        "emi": 4760,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 54877,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 54877,
+    "defaults": 1,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR085",
+    "monthly_income": 70620,
+    "employment_type": "business",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 439265,
+        "emi": 2684,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 650,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR086",
+    "monthly_income": 77522,
+    "employment_type": "farmer",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 255244,
+        "emi": 5628,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 10294,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 10294,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR087",
+    "monthly_income": 26383,
+    "employment_type": "student",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 78753,
+        "emi": 6040,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 83994,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 83994,
+    "defaults": 1,
+    "cibil_score": 590,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR088",
+    "monthly_income": 18932,
+    "employment_type": "senior",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 386586,
+        "emi": 10348,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 5128,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 5128,
+    "defaults": 1,
+    "cibil_score": 840,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR089",
+    "monthly_income": 29317,
+    "employment_type": "salaried",
+    "credit_history_years": 2,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 144869,
+        "emi": 2453,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 12480,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 12480,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR090",
+    "monthly_income": 76046,
+    "employment_type": "business",
+    "credit_history_years": 3,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 67636,
+        "emi": 5770,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 73118,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 73118,
+    "defaults": 0,
+    "cibil_score": 800,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR091",
+    "monthly_income": 30313,
+    "employment_type": "farmer",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 126756,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 126756,
+    "defaults": 0,
+    "cibil_score": 870,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR092",
+    "monthly_income": 27125,
+    "employment_type": "student",
+    "credit_history_years": 2,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 321345,
+        "emi": 9673,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 540,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR093",
+    "monthly_income": 46169,
+    "employment_type": "senior",
+    "credit_history_years": 9,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 96534,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 96534,
+    "defaults": 1,
+    "cibil_score": 670,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR094",
+    "monthly_income": 19326,
+    "employment_type": "salaried",
+    "credit_history_years": 5,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 23978,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 23978,
+    "defaults": 1,
+    "cibil_score": 690,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR095",
+    "monthly_income": 62177,
+    "employment_type": "business",
+    "credit_history_years": 8,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 275249,
+        "emi": 4820,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 49518,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 49518,
+    "defaults": 1,
+    "cibil_score": 750,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR096",
+    "monthly_income": 39930,
+    "employment_type": "farmer",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 351193,
+        "emi": 2121,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 42818,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 42818,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR097",
+    "monthly_income": 21182,
+    "employment_type": "student",
+    "credit_history_years": 9,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 417451,
+        "emi": 7199,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 44700,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 44700,
+    "defaults": 1,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR098",
+    "monthly_income": 19217,
+    "employment_type": "senior",
+    "credit_history_years": 8,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 860,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR099",
+    "monthly_income": 24320,
+    "employment_type": "salaried",
+    "credit_history_years": 10,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 22039,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 22039,
+    "defaults": 1,
+    "cibil_score": 740,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR100",
+    "monthly_income": 24195,
+    "employment_type": "business",
+    "credit_history_years": 8,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 367253,
+        "emi": 14503,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 138295,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 138295,
+    "defaults": 1,
+    "cibil_score": 790,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR101",
+    "monthly_income": 43163,
+    "employment_type": "farmer",
+    "credit_history_years": 3,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 90378,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 90378,
+    "defaults": 1,
+    "cibil_score": 570,
+    "credit_rating": "Very Poor",
+    "credit_risk_description": "Very high credit risk",
+    "loan_approval_likelihood": "Very Unlikely"
+  },
+  {
+    "user_id": "USR102",
+    "monthly_income": 75938,
+    "employment_type": "student",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 375311,
+        "emi": 8479,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 134775,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 134775,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR103",
+    "monthly_income": 65684,
+    "employment_type": "senior",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 323703,
+        "emi": 10183,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 16407,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 16407,
+    "defaults": 1,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR104",
+    "monthly_income": 67750,
+    "employment_type": "salaried",
+    "credit_history_years": 2,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 143993,
+        "emi": 7849,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 7530,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 7530,
+    "defaults": 1,
+    "cibil_score": 850,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR105",
+    "monthly_income": 68632,
+    "employment_type": "business",
+    "credit_history_years": 5,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR106",
+    "monthly_income": 47438,
+    "employment_type": "farmer",
+    "credit_history_years": 7,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 134365,
+        "emi": 13480,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR107",
+    "monthly_income": 59826,
+    "employment_type": "student",
+    "credit_history_years": 6,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 840,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR108",
+    "monthly_income": 44195,
+    "employment_type": "senior",
+    "credit_history_years": 1,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 165310,
+        "emi": 2385,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 192086,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 192086,
+    "defaults": 1,
+    "cibil_score": 620,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR109",
+    "monthly_income": 63807,
+    "employment_type": "salaried",
+    "credit_history_years": 4,
+    "existing_loans": [
+      {
+        "type": "home_loan",
+        "amount": 452581,
+        "emi": 11561,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 32028,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 32028,
+    "defaults": 1,
+    "cibil_score": 800,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR110",
+    "monthly_income": 64796,
+    "employment_type": "business",
+    "credit_history_years": 6,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 474624,
+        "emi": 5991,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 800,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR111",
+    "monthly_income": 74466,
+    "employment_type": "farmer",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 386411,
+        "emi": 2718,
+        "status": "active",
+        "late_payments": 2
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 42331,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 42331,
+    "defaults": 0,
+    "cibil_score": 750,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR112",
+    "monthly_income": 33798,
+    "employment_type": "student",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 16342,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 16342,
+    "defaults": 0,
+    "cibil_score": 870,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR113",
+    "monthly_income": 76556,
+    "employment_type": "senior",
+    "credit_history_years": 7,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 13863,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 13863,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR114",
+    "monthly_income": 20713,
+    "employment_type": "salaried",
+    "credit_history_years": 8,
+    "existing_loans": [],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 1,
+    "cibil_score": 610,
+    "credit_rating": "Poor",
+    "credit_risk_description": "High credit risk",
+    "loan_approval_likelihood": "Unlikely"
+  },
+  {
+    "user_id": "USR115",
+    "monthly_income": 51650,
+    "employment_type": "business",
+    "credit_history_years": 5,
+    "existing_loans": [
+      {
+        "type": "car_loan",
+        "amount": 373510,
+        "emi": 4183,
+        "status": "active",
+        "late_payments": 1
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 30404,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 30404,
+    "defaults": 0,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR116",
+    "monthly_income": 18175,
+    "employment_type": "farmer",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 373622,
+        "emi": 7243,
+        "status": "active",
+        "late_payments": 0
+      }
+    ],
+    "credit_cards": [],
+    "total_credit_limit": 0,
+    "credit_used": 0,
+    "defaults": 0,
+    "cibil_score": 890,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR117",
+    "monthly_income": 69807,
+    "employment_type": "student",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 200000,
+        "used": 175097,
+        "late_payments": 2
+      }
+    ],
+    "total_credit_limit": 200000,
+    "credit_used": 175097,
+    "defaults": 1,
+    "cibil_score": 650,
+    "credit_rating": "Fair",
+    "credit_risk_description": "Moderate credit risk",
+    "loan_approval_likelihood": "Possible"
+  },
+  {
+    "user_id": "USR118",
+    "monthly_income": 70943,
+    "employment_type": "senior",
+    "credit_history_years": 10,
+    "existing_loans": [
+      {
+        "type": "personal_loan",
+        "amount": 102205,
+        "emi": 11024,
+        "status": "active",
+        "late_payments": 3
+      }
+    ],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 2633,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 2633,
+    "defaults": 0,
+    "cibil_score": 900,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  },
+  {
+    "user_id": "USR119",
+    "monthly_income": 48575,
+    "employment_type": "salaried",
+    "credit_history_years": 4,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 50000,
+        "used": 19505,
+        "late_payments": 1
+      }
+    ],
+    "total_credit_limit": 50000,
+    "credit_used": 19505,
+    "defaults": 1,
+    "cibil_score": 720,
+    "credit_rating": "Good",
+    "credit_risk_description": "Low credit risk",
+    "loan_approval_likelihood": "Likely"
+  },
+  {
+    "user_id": "USR120",
+    "monthly_income": 48035,
+    "employment_type": "business",
+    "credit_history_years": 5,
+    "existing_loans": [],
+    "credit_cards": [
+      {
+        "limit": 100000,
+        "used": 6306,
+        "late_payments": 0
+      }
+    ],
+    "total_credit_limit": 100000,
+    "credit_used": 6306,
+    "defaults": 1,
+    "cibil_score": 820,
+    "credit_rating": "Excellent",
+    "credit_risk_description": "Very low credit risk",
+    "loan_approval_likelihood": "Highly Likely"
+  }
+]
